@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RoomController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,4 +25,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+     Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+    Route::post('/rooms', [RoomController::class, 'create'])->name('rooms.create');
+    Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+    Route::post('/rooms/{room}/join', [RoomController::class, 'join'])->name('rooms.join');
 });
