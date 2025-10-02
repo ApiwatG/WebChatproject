@@ -1,0 +1,73 @@
+body {
+  background: url("img/login_webnew.png") no-repeat center center/cover;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 50px;
+  color: white;
+  text-align: center;
+  height: 90vh;
+}
+.menu {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.menu a {
+  background: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  text-decoration: none;
+  color: black;
+}
+a:hover{
+  background-color: lightgray;
+}
+
+.coin {
+  position: absolute;
+  top: 8%;
+  right: 20px;
+  font-size: 30px;
+}
+
+.message {
+  margin: 8% 0 10px;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+input {
+  padding: 10px;
+  width: 30%;
+  border: 1px solid black;
+  border-radius: 6px;
+  font-size: 0.5em;
+  margin-bottom: 15px;
+  outline: none;
+}
+
+.btn-join {
+  display: block;
+  margin: 2% auto;
+  padding: 12px 3%;
+  background: #a020f0;
+  border: 3px solid black;
+  border-radius: 10px;
+  font-size: 0.7em;
+  color: white;
+  cursor: pointer;
+}
+.btn-join {
+  
+  transition: 0.3s ease;
+}
+
+.btn-join:hover {
+  background: #c41af8;
+}

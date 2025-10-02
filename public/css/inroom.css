@@ -1,0 +1,151 @@
+:root {
+  --bg1: #0f1633;
+  --bg2: #2b1a66;
+  --panel: #ffffff;
+  --accent: #b84be0;
+  --accent2: #7b3bd6;
+  --muted: #d9d9d9;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background-image: url("img/Inroom.png");
+  color: #111;
+}
+
+.wrap {
+  display: flex;
+  gap: 24px;
+  height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+/* Left scene */
+.scene {
+  flex: 1;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* Minigame logo */
+.minilogo {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  width: 84px;
+  height: 84px;
+  background: linear-gradient(180deg, #fff, #f1f1ff);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+.minilogo img {
+  width: 62px;
+  height: 62px;
+}
+
+/* Right chat panel */
+.chatPanel {
+  width: 450px;
+  background: var(--panel);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(7, 7, 20, 0.5);
+}
+.chatHeader {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.uid {
+  font-size: 13px;
+  color: #555;
+}
+.messages {
+  flex: 1;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+  background: linear-gradient(180deg, #fff, #fbfbff);
+}
+
+.msg {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  line-height: 1.25;
+}
+.msg.recv {
+  background: var(--muted);
+  align-self: flex-start;
+  color: #333;
+}
+.msg.sent {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: white;
+  align-self: flex-end;
+}
+.msg.small {
+  font-size: 13px;
+  padding: 8px 12px;
+}
+
+.inputRow {
+  display: flex;
+  padding: 12px;
+  border-top: 1px solid #f0f0f3;
+}
+.inputRow input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 20px;
+  border: 1px solid #eee;
+  font-size: 14px;
+}
+.inputRow button {
+  margin-left: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent2);
+  color: white;
+  font-weight: 600;
+}
+
+/* small details */
+.sound {
+  position: fixed;
+  left: 12px;   
+  top: 12px;    
+  width: 35px;
+  height: 35px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #fff, #f7f0ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; /* ให้ลอยเหนือ element อื่น */
+}
+
+@media (max-width: 900px) {
+  .wrap {
+    flex-direction: column;
+  }
+  .chatPanel {
+    width: 100%;
+    height: 360px;
+  }
+}

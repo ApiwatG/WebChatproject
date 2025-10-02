@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: url("img/login_webnew.png") no-repeat center center fixed;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+}
+
+.cosmetic-container {
+  display: flex;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.cosmetic-panel {
+  width: 30%;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cosmetic-panel h1 {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.cosmetic-panel input {
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.btn-confirm {
+  background: #a020f0;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-bottom: 2%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 100%;
+  height: 50%;
+}
+
+.btn-confirm:hover {
+  background: #c41af8;
+}
+
+.btn-cancle {
+  width: 100%;
+  height: 50%;
+  display: block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border: 1px solid black;
+  color: black;
+}
+a {
+  text-decoration: none;
+}
+
+a :hover {
+  background: #b1b1b1;
+}
+
+input {
+  width: 100%;
+  height: 38px;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.3s ease;
+  outline: none;
+}

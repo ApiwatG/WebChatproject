@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\cosmeticcontroller;
+use App\Http\Controllers\shopcontroller;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +28,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/shop', [shopcontroller::class, 'index'])->name('shop.index');
+    Route::get('/cosmetic', [cosmeticcontroller::class, 'index'])->name('cosmetic.index');
     Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
     Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
     Route::post('/rooms/{room}/join', [RoomController::class, 'join'])->name('rooms.join');

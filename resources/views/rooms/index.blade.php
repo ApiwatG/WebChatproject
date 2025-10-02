@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<button class="btn-join"><a href="{{route('dashboard')}}"><-</a></button>
 <h1 class="text-2xl font-bold mb-4">Rooms</h1>
 
 @foreach($rooms as $room)

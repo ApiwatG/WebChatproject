@@ -1,61 +1,122 @@
-@extends('layouts.app')
 
-@section('content')
-<h1 class="text-2xl font-bold mb-4">Room: {{ $room->name }}</h1>
-
-<h3 class="mb-2">Users ({{ $room->users()->count() }}/{{ $room->max_users }}):</h3>
-<ul class="mb-6">
-    @foreach($room->users as $user)
-        <li>{{ $user->name }}</li>
-    @endforeach
-</ul>
-
-{{-- Chat Section --}}
-<div class="border rounded-lg p-4 mb-4">
-    <h2 class="text-xl font-semibold mb-3">Chat</h2>
-
-    <div id="chat-box" class="border p-3 h-64 overflow-y-scroll bg-gray-50 mb-3">
-        {{-- messages will load here --}}
+<link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
+<div class="wrap">
+    {{-- Left Scene Area --}}
+    <div class="scene">
+        {{-- Your game/content area here --}}
+        <div class="minilogo">
+            <img src="{{ asset('img/logo.png') }}" alt="Game Logo" onerror="this.style.display='none'">
+        </div>
     </div>
 
-    <form id="chat-form" class="flex gap-2">
-        @csrf
-        <input type="text" id="message" class="border p-2 flex-grow rounded" placeholder="Type message...">
-        <button type="submit" class="bg-blue-500 text-white px-4 rounded">Send</button>
-    </form>
+    {{-- Right Chat Panel --}}
+    <div class="chatPanel">
+        <div class="chatHeader">
+            <h2>{{ $room->name }}</h2>
+            <div class="uid">Room #{{ $room->id }}</div>
+        </div>
+
+        <div class="userList">
+            <strong>Users ({{ $room->users()->count() }}/{{ $room->max_users }}):</strong>
+            @foreach($room->users as $user)
+                {{ $user->name }}{{ !$loop->last ? ', ' : '' }}
+            @endforeach
+        </div>
+
+        <div id="messages" class="messages">
+            {{-- Messages will load here --}}
+        </div>
+
+        <form id="chat-form" class="inputRow">
+            @csrf
+            <input 
+                type="text" 
+                id="message" 
+                placeholder="Type your message..." 
+                autocomplete="off"
+            >
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+{{-- Sound Toggle Button --}}
+<div class="sound" onclick="toggleSound()">
+    🔊
 </div>
 
 <script>
     const roomId = "{{ $room->id }}";
+    const currentUser = "{{ auth()->user()->name }}";
+    let soundEnabled = true;
+
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        document.querySelector('.sound').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    function addMessage(user, message, isSent = false) {
+        const messagesDiv = document.getElementById("messages");
+        const msgDiv = document.createElement('div');
+        msgDiv.className = isSent ? 'msg sent' : 'msg recv';
+        
+        if (!isSent) {
+            msgDiv.innerHTML = `<strong>${user}:</strong> ${message}`;
+        } else {
+            msgDiv.innerHTML = `<strong>You:</strong> ${message}`;
+        }
+        
+        messagesDiv.appendChild(msgDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 
     // Load cached messages
     fetch(`/chat/${roomId}/messages`)
         .then(res => res.json())
         .then(data => {
-            let box = document.getElementById("chat-box");
             data.forEach(msg => {
-                box.innerHTML += `<p><b>${msg.user}</b>: ${msg.message}</p>`;
+                const isSent = msg.user === currentUser;
+                addMessage(msg.user, msg.message, isSent);
             });
-            box.scrollTop = box.scrollHeight;
-        });
+        })
+        .catch(err => console.error('Failed to load messages:', err));
 
     // Listen for new messages
     if (window.Echo) {
         window.Echo.join(`chat.${roomId}`)
-            .listen("MessageSent", (e) => {
-                let box = document.getElementById("chat-box");
-                box.innerHTML += `<p><b>${e.user}</b>: ${e.message}</p>`;
-                box.scrollTop = box.scrollHeight;
+            .here((users) => {
+                console.log('Users currently in room:', users);
+            })
+            .joining((user) => {
+                console.log(user.name + ' joined the room');
+            })
+            .leaving((user) => {
+                console.log(user.name + ' left the room');
+            })
+            .listen('MessageSent', (e) => {
+                addMessage(e.user, e.message, false);
+                
+                // Optional: Play sound notification
+                if (soundEnabled && e.user !== currentUser) {
+                    // You can add a notification sound here
+                    console.log('New message received!');
+                }
             });
     } else {
-        console.error("Echo not initialized. Check bootstrap.js and vite build.");
+        console.error("Echo not initialized. Check bootstrap.js and run 'npm run dev'");
     }
 
     // Send message
-    document.getElementById("chat-form").addEventListener("submit", function(e){
+    document.getElementById("chat-form").addEventListener("submit", function(e) {
         e.preventDefault();
-        let message = document.getElementById("message").value.trim();
-        if(message === "") return;
+        
+        const messageInput = document.getElementById("message");
+        const message = messageInput.value.trim();
+        
+        if (message === "") return;
+
+        // Add message immediately to UI
+        addMessage(currentUser, message, true);
 
         fetch(`/chat/${roomId}/send`, {
             method: "POST",
@@ -63,10 +124,24 @@
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": document.querySelector("input[name='_token']").value
             },
-            body: JSON.stringify({message})
-        }).then(() => {
-            document.getElementById("message").value = "";
+            body: JSON.stringify({ message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Message sent successfully');
+        })
+        .catch(err => {
+            console.error('Failed to send message:', err);
         });
+
+        messageInput.value = "";
+    });
+
+    // Allow Enter to send message
+    document.getElementById("message").addEventListener("keypress", function(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            document.getElementById("chat-form").dispatchEvent(new Event('submit'));
+        }
     });
 </script>
-@endsection
