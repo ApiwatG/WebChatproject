@@ -34,12 +34,15 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+               @yield('content')
             </main>
         </div>
 
         @stack('modals')
 
         @livewireScripts
+    @vite(['resources/js/app.js'])
+
+        
     </body>
 </html>

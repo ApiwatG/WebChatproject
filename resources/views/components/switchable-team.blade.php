@@ -1,3 +1,5 @@
+use Illuminate\Support\Facades\Auth;
+
 @props(['team', 'component' => 'dropdown-link'])
 
 <form method="POST" action="{{ route('current-team.update') }}" x-data>

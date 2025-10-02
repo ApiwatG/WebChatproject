@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ChatController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,8 +26,16 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-     Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
-    Route::post('/rooms', [RoomController::class, 'create'])->name('rooms.create');
-    Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+    Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
+    Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
     Route::post('/rooms/{room}/join', [RoomController::class, 'join'])->name('rooms.join');
+    Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+    Route::post('/rooms/{room}/send', [RoomController::class, 'sendMessage'])->name('rooms.sendMessage');
+    Route::post('/rooms/{room}/report', [RoomController::class, 'reportMessage'])->name('rooms.report');
+    Route::get('/chat/{roomId}/messages', [ChatController::class, 'getMessages']);
+    Route::post('/chat/{roomId}/send', [ChatController::class, 'sendMessage']);
+    Route::post('/chat/{roomId}/report', [ChatController::class, 'reportMessage']);
+
 });
+    
+
