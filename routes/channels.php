@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Models\User;
+use App\Models\Room;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +15,10 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-use App\Models\User;
-use App\Models\Room;
-
-Broadcast::channel('room.{roomId}', function (User $user, $roomId) {
-    return Room::find($roomId)?->users()->where('user_id', $user->id)->exists();
+Broadcast::channel('chat.{roomId}', function (User $user, $roomId) {
+    return Room::where('id', $roomId)
+               ->whereHas('users', function ($q) use ($user) {
+                   $q->where('users.id', $user->id);
+               })
+               ->exists();
 });

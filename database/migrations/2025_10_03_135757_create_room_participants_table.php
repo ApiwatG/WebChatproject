@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('room_participants', function (Blueprint $table) {
               $table->id();
+              
                 $table->foreignId('room_id')->constrained()->onDelete('cascade');
                 $table->foreignId('user_id')->constrained()->onDelete('cascade');
                 $table->timestamp('joined_at')->nullable();

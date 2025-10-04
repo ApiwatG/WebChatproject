@@ -31,20 +31,21 @@ return [
     'connections' => [
 
         'pusher' => [
-    'driver' => 'pusher',
-    'key' => env('PUSHER_APP_KEY'),
-    'secret' => env('PUSHER_APP_SECRET'),
-    'app_id' => env('PUSHER_APP_ID'),
-    'options' => [
-        'cluster' => env('PUSHER_APP_CLUSTER'),
-        'useTLS' => env('PUSHER_SCHEME', 'https') === 'https',
-        'host' => env('PUSHER_HOST', '127.0.0.1'),
-        'port' => env('PUSHER_PORT', 6001),
-        'scheme' => env('PUSHER_SCHEME', 'http'),
-            ],
-            'client_options' => [
-                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
-            ],
+            'driver' => 'pusher',
+            'key' => env('PUSHER_APP_KEY'),
+            'secret' => env('PUSHER_APP_SECRET'),
+            'app_id' => env('PUSHER_APP_ID'),
+            'options' => array_filter([
+                // include cluster/useTLS by default
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'useTLS' => env('PUSHER_SCHEME', 'https') === 'https' ? true : false,
+                // only include host/port/scheme if explicitly set
+                'host' => env('PUSHER_HOST') ?: null,
+                'port' => env('PUSHER_PORT') ?: null,
+                'scheme' => env('PUSHER_SCHEME') ?: null,
+                // you may keep forceTLS for client-side Echo
+                'encrypted' => env('PUSHER_SCHEME', 'https') === 'https' ? true : false,
+            ]),
         ],
 
         'ably' => [

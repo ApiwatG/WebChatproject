@@ -11,23 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cosmetic', function (Blueprint $table) {
-             $table->id();
-    $table->integer('price');
-    $table->string('cosmetic_name');
-
-    $table->timestamps();
-    $table->softDeletes();
-
-    $table->foreign('rarity_id')
-          ->references('id')
-          ->on('rarities')
-          ->onDelete('cascade');
-
-    $table->foreign('cosmetic_type_id')
-          ->references('id')
-          ->on('cosmetic_types')
-          ->onDelete('cascade');
+        Schema::create('cosmetics', function (Blueprint $table) {
+            $table->id();
+            $table->string('cosmetic_name');
+            $table->integer('price');
+            $table->string('cosmetic_img')->nullable();
+            $table->foreignId('rarity_id')->constrained('rarity')->onDelete('cascade');
+            $table->foreignId('cosmetic_type_id')->constrained('cosmetic_type')->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

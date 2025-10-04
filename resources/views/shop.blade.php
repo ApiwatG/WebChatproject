@@ -17,8 +17,8 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Search cosmetic..."
-            />
+              placeholder="Search cosmetic..."/>
+
           </div>
         </div>
         <div>
