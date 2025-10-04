@@ -39,13 +39,13 @@ class RoomController extends Controller
         return redirect()->route('rooms.show', $room->id);
     }
 
-  public function show(Room $room)
+  public function show($id)
 {
-    $room->load('users');
+    $room = Room::with(['users' => function ($q) {
+        $q->wherePivotNull('left_at'); // only active
+    }])->findOrFail($id);
 
-    $messages = Cache::get('room_'.$room->id.'_messages', []);
-
-    return view('rooms.show', compact('room', 'messages'));
+    return view('rooms.show', compact('room'));
 }
 
   

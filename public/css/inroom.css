@@ -13,6 +13,8 @@ body {
   margin: 0;
   font-family: Inter, system-ui, Arial, sans-serif;
   background-image: url("img/Inroom.png");
+  background-size: cover;
+  background-position: center;
   color: #111;
 }
 
@@ -30,6 +32,7 @@ body {
   position: relative;
   border-radius: 14px;
   overflow: hidden;
+  background: rgba(15, 22, 51, 0.3);
 }
 
 /* Minigame logo */
@@ -46,6 +49,7 @@ body {
   justify-content: center;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
+
 .minilogo img {
   width: 62px;
   height: 62px;
@@ -61,6 +65,7 @@ body {
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(7, 7, 20, 0.5);
 }
+
 .chatHeader {
   padding: 12px 16px;
   border-bottom: 1px solid #f0f0f3;
@@ -68,10 +73,19 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
+.chatHeader h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .uid {
   font-size: 13px;
   color: #555;
+  margin-top: 4px;
 }
+
 .messages {
   flex: 1;
   padding: 18px;
@@ -88,16 +102,19 @@ body {
   border-radius: 16px;
   line-height: 1.25;
 }
+
 .msg.recv {
   background: var(--muted);
   align-self: flex-start;
   color: #333;
 }
+
 .msg.sent {
   background: linear-gradient(90deg, var(--accent), var(--accent2));
   color: white;
   align-self: flex-end;
 }
+
 .msg.small {
   font-size: 13px;
   padding: 8px 12px;
@@ -108,13 +125,20 @@ body {
   padding: 12px;
   border-top: 1px solid #f0f0f3;
 }
+
 .inputRow input {
   flex: 1;
   padding: 12px 14px;
   border-radius: 20px;
   border: 1px solid #eee;
   font-size: 14px;
+  outline: none;
 }
+
+.inputRow input:focus {
+  border-color: var(--accent2);
+}
+
 .inputRow button {
   margin-left: 10px;
   padding: 10px 14px;
@@ -123,13 +147,157 @@ body {
   background: var(--accent2);
   color: white;
   font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-/* small details */
+.inputRow button:hover {
+  background: var(--accent);
+}
+
+/* Participants Section */
+.participants-section {
+  margin-top: 24px;
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin-left: 24px;
+}
+
+.participants-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 12px 0;
+  color: #333;
+}
+
+.participants-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.participant-item {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f3;
+}
+
+.participant-item:last-child {
+  border-bottom: none;
+}
+
+.report-btn {
+  margin-left: 12px;
+  font-size: 12px;
+  background: #ef4444;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.report-btn:hover {
+  background: #dc2626;
+}
+
+/* Report Modal */
+.report-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.report-modal.modal-open {
+  display: flex;
+}
+
+.report-modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 384px;
+  max-width: 90%;
+}
+
+.report-modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 16px 0;
+  color: #333;
+}
+
+.report-textarea {
+  border: 1px solid #e5e5e5;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.report-textarea:focus {
+  border-color: var(--accent2);
+}
+
+.report-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-cancel {
+  background: #e5e5e5;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #d4d4d4;
+}
+
+.btn-submit {
+  background: #dc2626;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btn-submit:hover {
+  background: #b91c1c;
+}
+
+/* Sound button */
 .sound {
   position: fixed;
-  left: 12px;   
-  top: 12px;    
+  left: 12px;
+  top: 12px;
   width: 35px;
   height: 35px;
   border-radius: 6px;
@@ -137,15 +305,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999; /* ให้ลอยเหนือ element อื่น */
+  z-index: 999;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Responsive Design */
 @media (max-width: 900px) {
   .wrap {
     flex-direction: column;
   }
+
   .chatPanel {
     width: 100%;
     height: 360px;
+  }
+
+  .participants-section {
+    margin-left: 0;
+    margin-right: 24px;
   }
 }

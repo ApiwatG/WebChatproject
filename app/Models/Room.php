@@ -11,9 +11,13 @@ class Room extends Model
 
     protected $fillable = ['name', 'max_users'];
 
+    
+
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'room_participants')
+                ->withPivot('joined_at', 'left_at')
+                ->withTimestamps();
     }
 
     public function isFull(): bool

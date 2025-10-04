@@ -7,15 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
-    protected $fillable = ['user_id', 'room_id', 'reported_message', 'reason'];
+       protected $fillable = ['reporter_id', 'offender_id', 'message'];
 
-    public function user()
+    public function participant()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(RoomParticipant::class);
     }
 
-    public function room()
+    public function reporter()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(User::class, 'reporter_id');
+    }
+
+    public function offender()
+    {
+        return $this->belongsTo(User::class, 'offender_id');
     }
 }

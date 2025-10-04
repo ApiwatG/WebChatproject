@@ -1,147 +1,177 @@
+@extends('layouts.app')
 
+@section('content')
+
+{{-- Include the CSS file --}}
 <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
+
 <div class="wrap">
-    {{-- Left Scene Area --}}
+    {{-- Left scene --}}
     <div class="scene">
-        {{-- Your game/content area here --}}
+        {{-- Example placeholder for your game/room scene --}}
         <div class="minilogo">
-            <img src="{{ asset('img/logo.png') }}" alt="Game Logo" onerror="this.style.display='none'">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo">
         </div>
     </div>
 
-    {{-- Right Chat Panel --}}
+    {{-- Right chat panel --}}
     <div class="chatPanel">
         <div class="chatHeader">
-            <h2>{{ $room->name }}</h2>
-            <div class="uid">Room #{{ $room->id }}</div>
+            <div>
+                <h2 class="text-lg font-bold">{{ $room->name }}</h2>
+                <div class="uid">Users: {{ $room->users->count() }}/{{ $room->max_users }}</div>
+            </div>
         </div>
 
-        <div class="userList">
-            <strong>Users ({{ $room->users()->count() }}/{{ $room->max_users }}):</strong>
-            @foreach($room->users as $user)
-                {{ $user->name }}{{ !$loop->last ? ', ' : '' }}
-            @endforeach
+        {{-- Messages --}}
+        <div id="chat-box" class="messages">
+            {{-- Cached + realtime messages will appear here --}}
         </div>
 
-        <div id="messages" class="messages">
-            {{-- Messages will load here --}}
-        </div>
-
+        {{-- Input row --}}
         <form id="chat-form" class="inputRow">
             @csrf
-            <input 
-                type="text" 
-                id="message" 
-                placeholder="Type your message..." 
-                autocomplete="off"
-            >
+            <input type="text" id="message" name="message" placeholder="Type a message..." autocomplete="off">
             <button type="submit">Send</button>
         </form>
     </div>
 </div>
 
-{{-- Sound Toggle Button --}}
-<div class="sound" onclick="toggleSound()">
-    🔊
+{{-- Participants + Report --}}
+<div class="participants-section">
+    <h3 class="participants-title">Participants</h3>
+    <ul class="participants-list">
+        @foreach($room->users as $user)
+            <li class="participant-item">
+                {{ $user->name }}
+                @if($user->id !== auth()->id())
+                    <button 
+                        type="button"
+                        onclick="openReportModal({{ $user->id }}, {!! json_encode($user->name) !!})" 
+                        class="report-btn">
+                        Report
+                    </button>
+                @endif
+            </li>
+        @endforeach
+    </ul>
 </div>
+
+{{-- Report Modal --}}
+<div id="reportModal" class="report-modal" style="display:none;">
+    <div class="report-modal-content">
+        <h2 class="report-modal-title">Report <span id="reportUserName"></span></h2>
+        <form id="reportForm" method="POST" action="">
+            @csrf
+            <textarea name="message" class="report-textarea" rows="3" placeholder="Reason for report..." required></textarea>
+            <div class="report-modal-actions">
+                <button type="button" onclick="closeReportModal()" class="btn-cancel">Cancel</button>
+                <button type="submit" class="btn-submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- Pusher + Echo client (only add if you haven't initialized Echo in your app bundle) --}}
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.11.0/dist/echo.iife.js"></script>
 
 <script>
     const roomId = "{{ $room->id }}";
-    const currentUser = "{{ auth()->user()->name }}";
-    let soundEnabled = true;
+    const currentUserName = @json(auth()->user()->name);
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-    function toggleSound() {
-        soundEnabled = !soundEnabled;
-        document.querySelector('.sound').textContent = soundEnabled ? '🔊' : '🔇';
-    }
-
-    function addMessage(user, message, isSent = false) {
-        const messagesDiv = document.getElementById("messages");
-        const msgDiv = document.createElement('div');
-        msgDiv.className = isSent ? 'msg sent' : 'msg recv';
-        
-        if (!isSent) {
-            msgDiv.innerHTML = `<strong>${user}:</strong> ${message}`;
-        } else {
-            msgDiv.innerHTML = `<strong>You:</strong> ${message}`;
-        }
-        
-        messagesDiv.appendChild(msgDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // Initialize Echo if it's not already created by your compiled assets
+    if (typeof window.Echo === 'undefined') {
+        window.Pusher = Pusher;
+        window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key: "{{ config('broadcasting.connections.pusher.key') ?? env('PUSHER_APP_KEY') }}",
+            cluster: "{{ config('broadcasting.connections.pusher.options.cluster') ?? env('PUSHER_APP_CLUSTER') }}",
+            forceTLS: true,
+            auth: {
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            }
+        });
+        console.debug('Echo initialized on page');
     }
 
     // Load cached messages
     fetch(`/chat/${roomId}/messages`)
         .then(res => res.json())
         .then(data => {
+            const box = document.getElementById("chat-box");
             data.forEach(msg => {
-                const isSent = msg.user === currentUser;
-                addMessage(msg.user, msg.message, isSent);
+                const div = document.createElement("div");
+                div.className = (msg.user === currentUserName) ? "msg sent" : "msg recv";
+                div.innerHTML = `<strong>${msg.user}:</strong> ${msg.message}`;
+                box.appendChild(div);
             });
-        })
-        .catch(err => console.error('Failed to load messages:', err));
+            box.scrollTop = box.scrollHeight;
+        }).catch(err => console.error('Failed to load messages', err));
 
-    // Listen for new messages
-    if (window.Echo) {
-        window.Echo.join(`chat.${roomId}`)
-            .here((users) => {
-                console.log('Users currently in room:', users);
-            })
-            .joining((user) => {
-                console.log(user.name + ' joined the room');
-            })
-            .leaving((user) => {
-                console.log(user.name + ' left the room');
-            })
-            .listen('MessageSent', (e) => {
-                addMessage(e.user, e.message, false);
-                
-                // Optional: Play sound notification
-                if (soundEnabled && e.user !== currentUser) {
-                    // You can add a notification sound here
-                    console.log('New message received!');
-                }
-            });
-    } else {
-        console.error("Echo not initialized. Check bootstrap.js and run 'npm run dev'");
-    }
+    // Echo realtime listener
+    (function subscribeEcho(retries = 0, maxRetries = 40, delay = 200) {
+        if (typeof window.Echo !== 'undefined' && window.Echo && typeof window.Echo.channel === 'function') {
+            window.Echo.channel(`chat.${roomId}`)
+                .listen("MessageSent", (e) => {
+                    const box = document.getElementById("chat-box");
+                    const div = document.createElement("div");
+                    div.className = (e.user === currentUserName) ? "msg sent" : "msg recv";
+                    div.innerHTML = `<strong>${e.user}:</strong> ${e.message}`;
+                    box.appendChild(div);
+                    box.scrollTop = box.scrollHeight;
+                });
+        } else if (retries < maxRetries) {
+            setTimeout(() => subscribeEcho(retries + 1, maxRetries, delay), delay);
+        } else {
+            console.warn('Laravel Echo not available after retries; realtime messages will not be received.');
+        }
+    })();
 
     // Send message
-    document.getElementById("chat-form").addEventListener("submit", function(e) {
+    document.getElementById("chat-form").addEventListener("submit", function(e){
         e.preventDefault();
-        
         const messageInput = document.getElementById("message");
         const message = messageInput.value.trim();
-        
-        if (message === "") return;
+        if(message === "") return;
 
-        // Add message immediately to UI
-        addMessage(currentUser, message, true);
+        // Optimistic UI: append locally immediately (optional)
+        const box = document.getElementById("chat-box");
+        const div = document.createElement("div");
+        div.className = "msg sent";
+        div.innerHTML = `<strong>${currentUserName}:</strong> ${message}`;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
 
         fetch(`/chat/${roomId}/send`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector("input[name='_token']").value
+                "X-CSRF-TOKEN": csrfToken
             },
-            body: JSON.stringify({ message })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Message sent successfully');
-        })
-        .catch(err => {
-            console.error('Failed to send message:', err);
+            body: JSON.stringify({message})
+        }).then(res => {
+            if (!res.ok) throw new Error('Network response was not ok');
+            messageInput.value = "";
+        }).catch(err => {
+            console.error('Failed to send message', err);
+            // optionally show error or remove optimistic message
         });
-
-        messageInput.value = "";
     });
 
-    // Allow Enter to send message
-    document.getElementById("message").addEventListener("keypress", function(e) {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            document.getElementById("chat-form").dispatchEvent(new Event('submit'));
-        }
-    });
+    // Report modal
+    function openReportModal(offenderId, userName) {
+        document.getElementById('reportModal').style.display = 'block';
+        document.getElementById('reportUserName').innerText = userName;
+        document.getElementById('reportForm').action = `/report/${offenderId}`;
+    }
+
+    function closeReportModal() {
+        document.getElementById('reportModal').style.display = 'none';
+    }
 </script>
+
+@endsection

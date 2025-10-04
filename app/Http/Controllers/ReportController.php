@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Report;
 
 class ReportController extends Controller
 {
-    public function store(Request $request)
-{
+   public function store(Request $request, $offenderId)
+    {
     $request->validate([
-        'offender_id' => 'required|exists:users,id',
         'message' => 'required|string|max:1000',
     ]);
 
     Report::create([
         'reporter_id' => auth()->id(),
-        'offender_id' => $request->offender_id,
-        'message' => $request->message,
+        'offender_id' => $offenderId,
+        'message'     => $request->message,
     ]);
 
-    return response()->json(['status' => 'Report saved successfully']);
-}
+    return back()->with('success', 'Report submitted successfully.');
+    }
 
 public function index()
 {
