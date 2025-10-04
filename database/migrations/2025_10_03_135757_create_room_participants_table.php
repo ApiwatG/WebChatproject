@@ -16,8 +16,7 @@ return new class extends Migration
               
                 $table->foreignId('room_id')->constrained()->onDelete('cascade');
                 $table->foreignId('user_id')->constrained()->onDelete('cascade');
-                $table->timestamp('joined_at')->nullable();
-                $table->timestamp('left_at')->nullable();
+                $table->boolean('is_inroom')->default(false);
                 $table->timestamps();
         });
     }

@@ -35,6 +35,7 @@ Route::middleware([
     Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
     Route::post('/rooms/{room}/join', [RoomController::class, 'join'])->name('rooms.join');
     Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+    Route::post('/rooms/{room}/leave', [RoomController::class, 'leave'])->name('rooms.leave');
     Route::get('/chat/{roomId}/messages', [ChatController::class, 'getMessages']);
     Route::post('/chat/{roomId}/send', [ChatController::class, 'sendMessage']);
     Route::post('/chat/{roomId}/report', [ChatController::class, 'reportMessage']);
@@ -42,5 +43,5 @@ Route::middleware([
     Route::post('/report/{offender}', [ReportController::class, 'store'])->name('report.store');
 
 });
-    
+
 

@@ -6,7 +6,7 @@
 
 @foreach($rooms as $room)
 <div class="border p-3 mb-3 rounded">
-    <strong>{{ $room->name }}</strong> ({{ $room->users_count }}/{{ $room->max_users }})
+    <strong>{{ $room->name }}</strong> ({{ $room->active_users_count ?? 0 }}/{{ $room->max_users }})
     @if($room->isFull())
         <span class="text-red-500 ml-2">Full</span>
     @else

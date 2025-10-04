@@ -1,64 +1,66 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $room->name }} - Chat Room</title>
+    <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
+</head>
+<body>
 
-@section('content')
-
-{{-- Include the CSS file --}}
-<link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
-
-<div class="wrap">
-    {{-- Left scene --}}
-    <div class="scene">
-        {{-- Example placeholder for your game/room scene --}}
-        <div class="minilogo">
-            <img src="{{ asset('img/logo.png') }}" alt="Logo">
-        </div>
-    </div>
-
-    {{-- Right chat panel --}}
-    <div class="chatPanel">
-        <div class="chatHeader">
-            <div>
-                <h2 class="text-lg font-bold">{{ $room->name }}</h2>
-                <div class="uid">Users: {{ $room->users->count() }}/{{ $room->max_users }}</div>
+<div class="container-wrapper">
+    <div class="wrap">
+        <div class="scene">
+            <div class="minilogo">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo">
             </div>
         </div>
 
-        {{-- Messages --}}
-        <div id="chat-box" class="messages">
-            {{-- Cached + realtime messages will appear here --}}
+        <div class="chatPanel">
+            <form method="POST" action="{{ route('rooms.leave', $room->id) }}" style="display:inline;">
+                @csrf
+                <button type="submit" class="btn-exit">Exit Room</button>
+            </form>
+
+            <div class="chatHeader">
+                <div>
+                    <h2>{{ $room->name }}</h2>
+                    <div class="uid">Users: {{ $room->users->count() }}/{{ $room->max_users }}</div>
+                </div>
+            </div>
+
+            <div id="chat-box" class="messages"></div>
+
+            <form id="chat-form" class="inputRow">
+                @csrf
+                <input type="text" id="message" name="message" placeholder="Type a message..." autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
         </div>
 
-        {{-- Input row --}}
-        <form id="chat-form" class="inputRow">
-            @csrf
-            <input type="text" id="message" name="message" placeholder="Type a message..." autocomplete="off">
-            <button type="submit">Send</button>
-        </form>
+        <div class="participants-section">
+            <h3 class="participants-title">Participants ({{ $room->users->count() }})</h3>
+            <ul class="participants-list">
+                @foreach($room->users as $user)
+                    <li class="participant-item" data-user-id="{{ $user->id }}">
+                        {{ $user->name }}
+                        @if($user->id !== auth()->id())
+                            <button 
+                                type="button"
+                                onclick="openReportModal({{ $user->id }}, '{{ $user->name }}')" 
+                                class="report-btn">
+                                Report
+                            </button>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
 </div>
 
-{{-- Participants + Report --}}
-<div class="participants-section">
-    <h3 class="participants-title">Participants</h3>
-    <ul class="participants-list">
-        @foreach($room->users as $user)
-            <li class="participant-item">
-                {{ $user->name }}
-                @if($user->id !== auth()->id())
-                    <button 
-                        type="button"
-                        onclick="openReportModal({{ $user->id }}, {!! json_encode($user->name) !!})" 
-                        class="report-btn">
-                        Report
-                    </button>
-                @endif
-            </li>
-        @endforeach
-    </ul>
-</div>
-
-{{-- Report Modal --}}
-<div id="reportModal" class="report-modal" style="display:none;">
+<div id="reportModal" class="report-modal">
     <div class="report-modal-content">
         <h2 class="report-modal-title">Report <span id="reportUserName"></span></h2>
         <form id="reportForm" method="POST" action="">
@@ -72,106 +74,89 @@
     </div>
 </div>
 
-{{-- Pusher + Echo client (only add if you haven't initialized Echo in your app bundle) --}}
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.11.0/dist/echo.iife.js"></script>
 
 <script>
+(function(){
+    if (window.chatInit) return;
+    window.chatInit = true;
+
     const roomId = "{{ $room->id }}";
-    const currentUserName = @json(auth()->user()->name);
+    const currentUserName = @json(optional(auth()->user())->name);
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 
-    // Initialize Echo if it's not already created by your compiled assets
-    if (typeof window.Echo === 'undefined') {
-        window.Pusher = Pusher;
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key: "{{ config('broadcasting.connections.pusher.key') ?? env('PUSHER_APP_KEY') }}",
-            cluster: "{{ config('broadcasting.connections.pusher.options.cluster') ?? env('PUSHER_APP_CLUSTER') }}",
-            forceTLS: true,
-            auth: {
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                }
-            }
-        });
-        console.debug('Echo initialized on page');
-    }
+    const box = document.getElementById('chat-box');
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('message');
 
-    // Load cached messages
-    fetch(`/chat/${roomId}/messages`)
-        .then(res => res.json())
-        .then(data => {
-            const box = document.getElementById("chat-box");
-            data.forEach(msg => {
-                const div = document.createElement("div");
-                div.className = (msg.user === currentUserName) ? "msg sent" : "msg recv";
-                div.innerHTML = `<strong>${msg.user}:</strong> ${msg.message}`;
-                box.appendChild(div);
-            });
-            box.scrollTop = box.scrollHeight;
-        }).catch(err => console.error('Failed to load messages', err));
-
-    // Echo realtime listener
-    (function subscribeEcho(retries = 0, maxRetries = 40, delay = 200) {
-        if (typeof window.Echo !== 'undefined' && window.Echo && typeof window.Echo.channel === 'function') {
-            window.Echo.channel(`chat.${roomId}`)
-                .listen("MessageSent", (e) => {
-                    const box = document.getElementById("chat-box");
-                    const div = document.createElement("div");
-                    div.className = (e.user === currentUserName) ? "msg sent" : "msg recv";
-                    div.innerHTML = `<strong>${e.user}:</strong> ${e.message}`;
-                    box.appendChild(div);
-                    box.scrollTop = box.scrollHeight;
-                });
-        } else if (retries < maxRetries) {
-            setTimeout(() => subscribeEcho(retries + 1, maxRetries, delay), delay);
-        } else {
-            console.warn('Laravel Echo not available after retries; realtime messages will not be received.');
-        }
-    })();
-
-    // Send message
-    document.getElementById("chat-form").addEventListener("submit", function(e){
-        e.preventDefault();
-        const messageInput = document.getElementById("message");
-        const message = messageInput.value.trim();
-        if(message === "") return;
-
-        // Optimistic UI: append locally immediately (optional)
-        const box = document.getElementById("chat-box");
-        const div = document.createElement("div");
-        div.className = "msg sent";
-        div.innerHTML = `<strong>${currentUserName}:</strong> ${message}`;
-        box.appendChild(div);
+    function appendMessage(user, message) {
+        const d = document.createElement('div');
+        d.className = (user === currentUserName) ? 'msg sent' : 'msg recv';
+        d.innerHTML = `<strong>${escapeHtml(user)}:</strong> ${escapeHtml(message)}`;
+        box.appendChild(d);
         box.scrollTop = box.scrollHeight;
+    }
 
-        fetch(`/chat/${roomId}/send`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken
-            },
-            body: JSON.stringify({message})
-        }).then(res => {
-            if (!res.ok) throw new Error('Network response was not ok');
-            messageInput.value = "";
-        }).catch(err => {
-            console.error('Failed to send message', err);
-            // optionally show error or remove optimistic message
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; }); }
+
+    fetch(`/chat/${roomId}/messages`, { headers: { 'X-CSRF-TOKEN': csrfToken } })
+        .then(r => r.ok ? r.json() : Promise.reject(r))
+        .then(data => {
+            if (!Array.isArray(data)) return;
+            data.forEach(m => appendMessage(m.user ?? m.name ?? 'Unknown', m.message ?? m.body ?? ''));
+        })
+        .catch(err => console.debug('No cached messages or failed to load:', err));
+
+    if (window.Echo && typeof window.Echo.channel === 'function') {
+        try {
+            window.Echo.channel(`chat.${roomId}`)
+                .listen('MessageSent', e => {
+                    appendMessage(e.user ?? e.name ?? 'Unknown', e.message ?? e.body ?? '');
+                });
+        } catch (e) {
+            console.warn('Echo subscription failed', e);
+        }
+    }
+
+    if (form) {
+        form.addEventListener('submit', function(ev){
+            ev.preventDefault();
+            const message = input.value?.trim();
+            if (!message) return;
+            appendMessage(currentUserName || 'You', message);
+
+            fetch(`/chat/${roomId}/send`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            }).then(res => {
+                if (!res.ok) {
+                    console.error('Send failed', res);
+                } else {
+                    input.value = '';
+                }
+            }).catch(err => {
+                console.error('Failed to send message', err);
+            });
         });
-    });
-
-    // Report modal
-    function openReportModal(offenderId, userName) {
-        document.getElementById('reportModal').style.display = 'block';
-        document.getElementById('reportUserName').innerText = userName;
-        document.getElementById('reportForm').action = `/report/${offenderId}`;
     }
+})();
 
-    function closeReportModal() {
-        document.getElementById('reportModal').style.display = 'none';
-    }
+function openReportModal(offenderId, userName) {
+    document.getElementById('reportModal').style.display = 'flex';
+    document.getElementById('reportUserName').innerText = userName;
+    document.getElementById('reportForm').action = `/report/${offenderId}`;
+}
+
+function closeReportModal() {
+    document.getElementById('reportModal').style.display = 'none';
+}
 </script>
 
-@endsection
+</body>
+</html>

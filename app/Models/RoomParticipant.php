@@ -9,7 +9,7 @@ class RoomParticipant extends Model
 {
     use HasFactory;
 
-     protected $fillable = ['room_id', 'user_id', 'joined_at', 'left_at'];
+     protected $fillable = ['room_id', 'user_id', 'is_inroom'];
 
     public function reports()
     {

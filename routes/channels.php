@@ -15,10 +15,12 @@ use App\Models\Room;
 |
 */
 
-Broadcast::channel('chat.{roomId}', function (User $user, $roomId) {
-    return Room::where('id', $roomId)
-               ->whereHas('users', function ($q) use ($user) {
-                   $q->where('users.id', $user->id);
-               })
-               ->exists();
+Broadcast::channel('presence-chat.{roomId}', function (User $user, $roomId) {
+    // authorize only if user belongs to room
+    $allowed = Room::where('id', $roomId)
+        ->whereHas('users', function ($q) use ($user) {
+            $q->where('users.id', $user->id);
+        })->exists();
+
+    return $allowed ? ['id' => $user->id, 'name' => $user->name] : false;
 });

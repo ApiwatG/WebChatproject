@@ -9,20 +9,28 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'max_users'];
+    protected $fillable = [
+        'name',
+        'max_users',
+    ];
 
-    
-
+    // map to users via your actual pivot table name
     public function users()
     {
-        return $this->belongsToMany(User::class, 'room_participants')
-                ->withPivot('joined_at', 'left_at')
-                ->withTimestamps();
+        return $this->belongsToMany(\App\Models\User::class, 'room_participants', 'room_id', 'user_id')
+                    ->withTimestamps()
+                    ->withPivot('is_inroom');
     }
 
-    public function isFull(): bool
+    // helper relation for currently-in-room users
+    public function activeUsers()
     {
-        return $this->users()->count() >= $this->max_users;
+        return $this->users()->wherePivot('is_inroom', true);
+    }
+
+    public function isFull()
+    {
+        return $this->activeUsers()->count() >= $this->max_users;
     }
 }
 
