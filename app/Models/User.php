@@ -63,4 +63,10 @@ class User extends Authenticatable
 {
      return $this->belongsToMany(Room::class, 'room_participants');
 }
+
+public function cosmetic()
+{
+    return $this->belongsToMany(cosmetic::class);
+}
+
 }
