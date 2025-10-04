@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
-    // helper: keep cache + broadcast behaviour (old feature)
     protected function broadcastAndCacheMessage($roomId, $user, $message)
     {
         $cacheKey = "room:{$roomId}:messages";
@@ -20,11 +19,9 @@ class ChatController extends Controller
         $messages[] = ['user' => is_object($user) ? $user->name : $user, 'message' => $message, 'time' => now()];
         Cache::put($cacheKey, $messages, 3600);
 
-        // broadcast to others so sender doesn't receive duplicate if using optimistic UI
         broadcast(new MessageSent($user, $message, $roomId))->toOthers();
     }
 
-    // old endpoint — keep working
     public function sendMessage(Request $request, $roomId)
     {
         $request->validate(['message' => 'required|string|max:2000']);
@@ -37,7 +34,6 @@ class ChatController extends Controller
         return response()->json(['status' => 'Message Sent!']);
     }
 
-    // old endpoint — keep working
     public function getMessages($roomId)
     {
         $cacheKey = "room:{$roomId}:messages";
@@ -57,11 +53,9 @@ class ChatController extends Controller
         return response()->json(['status' => 'Reported']);
     }
 
-    // new endpoints (keep compatibility) — reuse helper
+
     public function messages($roomId)
     {
-        // if you store messages in DB via a Message model, you can keep this;
-        // fallback to cache if Room/messages relation is not available
         try {
             $room = Room::with('messages.user')->findOrFail($roomId);
             $rows = $room->messages()->latest()->take(100)->get()->reverse()->map(function($m){
