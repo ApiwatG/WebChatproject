@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Rarity extends Model
+class CosmeticType extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $table = 'rarity';
+    protected $table = 'cosmetic_type';
 
-    protected $fillable = ['rarity_name'];
+    protected $fillable = ['cosmetictype_name'];
 
     public function cosmetics()
     {

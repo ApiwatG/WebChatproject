@@ -41,7 +41,12 @@ Route::middleware([
     Route::post('/chat/{roomId}/report', [ChatController::class, 'reportMessage']);
     
     Route::post('/report/{offender}', [ReportController::class, 'store'])->name('report.store');
-
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+    Route::post('/shop/{cosmetic}/purchase', [ShopController::class, 'purchase'])->name('shop.purchase');
+    
+    Route::get('/cosmetic', [CosmeticController::class, 'index'])->name('cosmetic.index');
+    Route::post('/cosmetic/{cosmetic}/equip', [CosmeticController::class, 'equip'])->name('cosmetic.equip');
+    Route::post('/cosmetic/{cosmetic}/unequip', [CosmeticController::class, 'unequip'])->name('cosmetic.unequip');
 });
 
 
