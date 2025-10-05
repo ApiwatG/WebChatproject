@@ -198,3 +198,10 @@ input {
       color: #7b3bd6;
       text-decoration: underline;
     }
+
+.my-character-section {
+  position: fixed;
+  right: 25%;
+  top: 22%;
+  z-index: 100;
+}

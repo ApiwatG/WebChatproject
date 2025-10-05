@@ -198,19 +198,18 @@
           @endforelse
         </div>
       </div>
-       <div class="character-section">
-            <x-character-preview 
-                :user="auth()->user()" 
-                size="small"
-                :showEquipped="true"
-            />
-        </div>
+      
       <div style="margin-top: 20px;">      
         <a href="{{ route('dashboard') }}"><button class="btn-cancle">Back</button></a>
       </div>
     </div>
   </div>
-
+<div class="my-character-section">
+    <x-character-preview 
+        :user="auth()->user()" 
+        size="large"
+      />
+</div>
   <script>
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     

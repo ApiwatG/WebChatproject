@@ -309,7 +309,69 @@ body {
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
+   .participants-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
+        .participant-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .participant-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .participant-avatar {
+            flex-shrink: 0;
+        }
+
+        .participant-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .report-btn {
+            padding: 4px 12px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .report-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Make character preview smaller for participant list */
+        .participant-avatar .character-preview-small {
+            width: 80px;
+        }
+
+        .participant-avatar .character-display-small {
+            height: 100px;
+        }
+
+        .participant-avatar .character-base-small {
+            height: 90%;
+        }
 /* Responsive Design */
 @media (max-width: 900px) {
   .wrap {
@@ -325,4 +387,5 @@ body {
     margin-left: 0;
     margin-right: 24px;
   }
+  
 }

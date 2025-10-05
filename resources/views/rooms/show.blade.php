@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $room->name }} - Chat Room</title>
     <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
+
 </head>
 <body>
 
@@ -44,15 +45,23 @@
             <ul class="participants-list">
                 @foreach($room->users as $user)
                     <li class="participant-item" data-user-id="{{ $user->id }}">
-                        {{ $user->name }}
-                        @if($user->id !== auth()->id())
-                            <button 
-                                type="button"
-                                onclick="openReportModal({{ $user->id }}, '{{ $user->name }}')" 
-                                class="report-btn">
-                                Report
-                            </button>
-                        @endif
+                        <div class="participant-avatar">
+                            <x-character-preview 
+                                :user="$user" 
+                                size="small"
+                            />
+                        </div>
+                        <div class="participant-info">
+                            <div class="participant-name">{{ $user->name }}</div>
+                            @if($user->id !== auth()->id())
+                                <button 
+                                    type="button"
+                                    onclick="openReportModal({{ $user->id }}, '{{ $user->name }}')" 
+                                    class="report-btn">
+                                    Report
+                                </button>
+                            @endif
+                        </div>
                     </li>
                 @endforeach
             </ul>

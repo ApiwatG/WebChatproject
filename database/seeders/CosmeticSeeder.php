@@ -30,6 +30,7 @@ class CosmeticSeeder extends Seeder
             'price' => 100,
             'rarity_id' => $common->id,
             'cosmetic_type_id' => $hat->id,
+            'cosmetic_img' => 'cosmetics/cap.png',
         ]);
         
         Cosmetic::create([
@@ -37,6 +38,7 @@ class CosmeticSeeder extends Seeder
             'price' => 250,
             'rarity_id' => $uncommon->id,
             'cosmetic_type_id' => $accessory->id,
+            'cosmetic_img' => 'cosmetics/coolglasses.png',
         ]);
         
         Cosmetic::create([
@@ -44,6 +46,7 @@ class CosmeticSeeder extends Seeder
             'price' => 500,
             'rarity_id' => $rare->id,
             'cosmetic_type_id' => $outfit->id,
+            'cosmetic_img' => 'cosmetics/stylishsuit.png',
         ]);
         
         Cosmetic::create([
@@ -51,6 +54,7 @@ class CosmeticSeeder extends Seeder
             'price' => 1000,
             'rarity_id' => $epic->id,
             'cosmetic_type_id' => $hat->id,
+            'cosmetic_img' => 'cosmetics/crown.png',
         ]);
         
         Cosmetic::create([
@@ -58,6 +62,7 @@ class CosmeticSeeder extends Seeder
             'price' => 2500,
             'rarity_id' => $legendary->id,
             'cosmetic_type_id' => $accessory->id,
+            'cosmetic_img' => 'cosmetics/dragonwings.png',
         ]);
     }
 }

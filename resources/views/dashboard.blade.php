@@ -27,13 +27,12 @@
             </div>
         </div>
 
-        <div class="character-section">
-            <x-character-preview 
-                :user="auth()->user()" 
-                size="small"
-                :showEquipped="true"
-            />
-        </div>
+        <div class="my-character-position">
+    <x-character-preview 
+        :user="auth()->user()" 
+        size="small"
+      />
+</div>
     </div>
 </body>
 </html>

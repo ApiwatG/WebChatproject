@@ -26,17 +26,17 @@ class Cosmetic extends Model
 
     public function rarity()
     {
-        return $this->belongsTo(Rarity::class);
+        return $this->belongsTo(Rarity::class, 'rarity_id');
     }
 
     public function cosmeticType()
     {
-        return $this->belongsTo(CosmeticType::class);
+        return $this->belongsTo(CosmeticType::class, 'cosmetic_type_id');
     }
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_cosmetics')
+        return $this->belongsToMany(User::class, 'user_cosmetics', 'cosmetic_id', 'user_id')
             ->withPivot('is_equipped', 'acquired_at')
             ->withTimestamps();
     }

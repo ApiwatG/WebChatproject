@@ -16,6 +16,6 @@ class CosmeticType extends Model
 
     public function cosmetics()
     {
-        return $this->hasMany(Cosmetic::class);
+        return $this->hasMany(Cosmetic::class, 'cosmetic_type_id');
     }
 }
