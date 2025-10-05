@@ -71,3 +71,28 @@ input {
 .btn-join:hover {
   background: #c41af8;
 }
+.dashboard-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .character-section {
+            flex-shrink: 0;
+        }
+
+        
+        @media (max-width: 968px) {
+            .dashboard-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }

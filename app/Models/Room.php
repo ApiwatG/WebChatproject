@@ -14,7 +14,6 @@ class Room extends Model
         'max_users',
     ];
 
-    // map to users via your actual pivot table name
     public function users()
     {
         return $this->belongsToMany(\App\Models\User::class, 'room_participants', 'room_id', 'user_id')
@@ -22,7 +21,6 @@ class Room extends Model
                     ->withPivot('is_inroom');
     }
 
-    // helper relation for currently-in-room users
     public function activeUsers()
     {
         return $this->users()->wherePivot('is_inroom', true);

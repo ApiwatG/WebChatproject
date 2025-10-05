@@ -6,7 +6,128 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ asset('css/cosmetic.css') }}">
   <title>My Cosmetics - The Twilight Bar</title>
-  
+  <style>
+    .cosmetic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    
+    .cosmetic-card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+      position: relative;
+      border: 3px solid transparent;
+    }
+    
+    .cosmetic-card.equipped {
+      border-color: #7b3bd6;
+      box-shadow: 0 4px 16px rgba(123, 59, 214, 0.3);
+    }
+    
+    .cosmetic-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .cosmetic-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: #f0f0f0;
+    }
+    
+    .cosmetic-name {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .cosmetic-rarity {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .rarity-common { background: #9ca3af; color: white; }
+    .rarity-uncommon { background: #22c55e; color: white; }
+    .rarity-rare { background: #3b82f6; color: white; }
+    .rarity-epic { background: #a855f7; color: white; }
+    .rarity-legendary { background: #f59e0b; color: white; }
+    
+    .equipped-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #7b3bd6;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    
+    .btn-equip {
+      width: 100%;
+      padding: 8px;
+      background: linear-gradient(90deg, #b84be0, #7b3bd6);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 8px;
+    }
+    
+    .btn-equip:hover {
+      opacity: 0.9;
+    }
+    
+    .btn-equip.equipped {
+      background: #6b7280;
+    }
+    
+    .filter-section {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-section select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e5e5;
+      font-size: 14px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      grid-column: 1 / -1;
+    }
+
+    .empty-state a {
+      color: #7b3bd6;
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <div class="cosmetic-container"> 
@@ -77,7 +198,13 @@
           @endforelse
         </div>
       </div>
-      
+       <div class="character-section">
+            <x-character-preview 
+                :user="auth()->user()" 
+                size="small"
+                :showEquipped="true"
+            />
+        </div>
       <div style="margin-top: 20px;">      
         <a href="{{ route('dashboard') }}"><button class="btn-cancle">Back</button></a>
       </div>
@@ -152,3 +279,6 @@
         alert('Failed to unequip cosmetic');
       });
     }
+  </script>
+</body>
+</html>
