@@ -386,6 +386,7 @@
 =======
     // Listen for new messages
     if (window.Echo) {
+        console.log('Echo initialized, joining channel:', `chat.${roomId}`);
         window.Echo.join(`chat.${roomId}`)
             .here((users) => {
                 console.log('Users currently in room:', users);
@@ -396,6 +397,7 @@
             .leaving((user) => {
                 console.log(user.name + ' left the room');
             })
+<<<<<<< Updated upstream
             .listen('MessageSent', (e) => {
                 addMessage(e.user, e.message, e.user === currentUser, e.time);
 >>>>>>> Stashed changes
@@ -405,6 +407,16 @@
             window.addEventListener('beforeunload', () => {
                 if (typeof window.Echo !== 'undefined') {
                     Echo.leave(`chat.${roomId}`);
+=======
+            .listen('.MessageSent', (e) => {
+                console.log('Message received:', e);
+                addMessage(e.user, e.message, e.user === currentUser);
+                
+                // Optional: Play sound notification
+                if (soundEnabled && e.user !== currentUser) {
+                    // You can add a notification sound here
+                    console.log('New message received!');
+>>>>>>> Stashed changes
                 }
             });
 

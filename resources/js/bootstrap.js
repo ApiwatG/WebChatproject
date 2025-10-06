@@ -9,6 +9,9 @@ window.axios = axios;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
@@ -34,15 +37,24 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+<<<<<<< Updated upstream
 =======
 =======
 >>>>>>> Stashed changes
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
+=======
+
+// other bootstrapping you have...
+import Pusher from "pusher-js";
+import Echo from "laravel-echo";
+
+>>>>>>> Stashed changes
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: "pusher",
+<<<<<<< Updated upstream
     key: "9fb9967f0fe9d1b937af",
     cluster: "ap1",
     forceTLS: true,
@@ -63,4 +75,18 @@ window.Echo = new Echo({
     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
 });
 
+>>>>>>> Stashed changes
+=======
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    encrypted: true,
+    authEndpoint: "/broadcasting/auth",
+    auth: {
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+    },
+});
 >>>>>>> Stashed changes

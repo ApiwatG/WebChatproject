@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
+<<<<<<< Updated upstream
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+=======
+use App\Models\User;
+use App\Models\Room;
+
+Broadcast::channel('chat.{roomId}', function (User $user, $roomId) {
+    return true; // ตรวจสอบสิทธิ์ตามที่ต้องการ
+});
+>>>>>>> Stashed changes

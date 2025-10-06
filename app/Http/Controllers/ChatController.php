@@ -40,6 +40,7 @@ class ChatController extends Controller
         $messages[] = ['user' => $user->name, 'message' => $message, 'time' => $time];
         Cache::put($cacheKey, $messages, 3600);
 
+<<<<<<< Updated upstream
         broadcast(new MessageSent($roomId, $user->name, $message, $time))->toOthers();
 >>>>>>> Stashed changes
 
@@ -53,6 +54,18 @@ class ChatController extends Controller
                 'error' => 'Failed to send message'
             ], 500);
         }
+=======
+        $event = new MessageSent($roomId, $user->name, $message);
+        broadcast($event)->toOthers();
+
+        \Log::info('Message broadcast:', [
+            'room' => $roomId,
+            'user' => $user->name,
+            'message' => $message
+        ]);
+
+        return response()->json(['status' => 'Message Sent!', 'event' => $event]);
+>>>>>>> Stashed changes
     }
 
     public function getMessages($roomId)
