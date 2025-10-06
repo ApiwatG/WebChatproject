@@ -13,15 +13,19 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-        <!-- Styles -->
-        @livewireStyles
+        
+        <style>
+            .bg-image {
+                background-image: url('{{ asset('css/img/login_webnew.png') }}');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+        </style>
     </head>
-    <body>
-        <div class="font-sans text-gray-900 antialiased">
+    <body class="font-sans antialiased bg-image">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-black bg-opacity-50">
             {{ $slot }}
         </div>
-
-        @livewireScripts
     </body>
 </html>

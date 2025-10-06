@@ -9,13 +9,21 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserBanned
 {
-   
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() && !Auth::user()->is_active) {
-            Auth::logout();
+            // Store ban reason before logging out
+            $banReason = Auth::user()->ban_reason ?? 'Violation of terms';
             
-            return redirect()->route('login')->with('error', 'Your account has been banned. Reason: ' . (Auth::user()->ban_reason ?? 'Violation of terms'));
+            // Logout the user
+            Auth::guard('web')->logout();
+            
+            // Invalidate the session
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            
+            return redirect()->route('login')
+                ->with('error', 'Your account has been banned. Reason: ' . $banReason);
         }
 
         return $next($request);

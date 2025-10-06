@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+             <h1>The Twilight bar</h1>
         </x-slot>
 
         <div x-data="{ recovery: false }">

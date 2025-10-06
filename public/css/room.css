@@ -1,295 +1,302 @@
 * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-image: url('img/joinroompic.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding: 20px;
-        }
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('img/joinroompic.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 20px;
+}
 
-       
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
-        .btn-back {
-            display: inline-block;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            transition: all 0.3s;
-        }
+.btn-back {
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+}
 
-        .btn-back:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateX(-5px);
-        }
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateX(-5px);
+}
 
-        h1 {
-            font-size: 2.5rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-            margin-bottom: 30px;
-            text-align: center;
-        }
+h1 {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 30px;
+    text-align: center;
+}
 
-        .error-message {
-            background: rgba(239, 68, 68, 0.9);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 5px solid #dc2626;
-        }
+.error-message {
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 5px solid #dc2626;
+}
 
-        .quick-join-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+.quick-join-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 25px;
-            transition: all 0.3s;
-        }
+.feature-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s;
+}
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.2);
-        }
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+}
 
-        .feature-card.blue {
-            border-color: rgba(59, 130, 246, 0.5);
-        }
+.feature-card.blue {
+    border-color: rgba(59, 130, 246, 0.5);
+}
 
-        .feature-card.purple {
-            border-color: rgba(168, 85, 247, 0.5);
-        }
+.feature-card.purple {
+    border-color: rgba(168, 85, 247, 0.5);
+}
 
-        .feature-card.green {
-            border-color: rgba(34, 197, 94, 0.5);
-        }
+.feature-card.green {
+    border-color: rgba(34, 197, 94, 0.5);
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
 
-        .feature-card h3 {
-            color: white;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
+.feature-card h3 {
+    color: white;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
 
-        .feature-card p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
+.feature-card p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
 
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
 
-        input[type="text"] {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            color: white;
-            font-size: 1rem;
-        }
+input[type="text"] {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    color: white;
+    font-size: 1rem;
+}
 
-        input[type="text"]::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
+input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
 
-        input[type="text"]:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.6);
-            background: rgba(255, 255, 255, 0.25);
-        }
+input[type="text"]:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.25);
+}
 
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: white;
-        }
+button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: white;
+}
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
 
-        .btn-blue {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-        }
+.btn-blue {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
 
-        .btn-blue:hover {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-        }
+.btn-blue:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
 
-        .btn-purple {
-            background: linear-gradient(135deg, #a855f7, #9333ea);
-        }
+.btn-purple {
+    background: linear-gradient(135deg, #a855f7, #9333ea);
+}
 
-        .btn-purple:hover {
-            background: linear-gradient(135deg, #9333ea, #7e22ce);
-        }
+.btn-purple:hover {
+    background: linear-gradient(135deg, #9333ea, #7e22ce);
+}
 
-        .btn-green {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-        }
+.btn-green {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
 
-        .btn-green:hover {
-            background: linear-gradient(135deg, #16a34a, #15803d);
-        }
+.btn-green:hover {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+}
 
-        .btn-full {
-            width: 100%;
-        }
+.btn-full {
+    width: 100%;
+}
 
-        .section-title {
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        }
+.section-title {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
 
-        .rooms-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+.rooms-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
 
-        .room-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-        
-        }
+.room-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: all 0.3s;
+}
 
-        .room-card:hover {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-        }
+.room-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
 
-        .room-info {
-            color: white;
-        }
+.room-info {
+    color: white;
+    flex: 1;
+}
 
-        .room-info strong {
-            font-size: 1.2rem;
-            display: block;
-            margin-bottom: 5px;
-        }
+.room-info strong {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 5px;
+}
 
-        .room-details {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
+.room-details {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
 
-        .room-count {
-            color: rgba(255, 255, 255, 0.8);
-        }
+.room-count {
+    color: rgba(255, 255, 255, 0.8);
+}
 
-        .room-id {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
+.room-id {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    display: block;
+    margin: 5px 0;
+}
 
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 5px;
+}
 
-        .status-full {
-            background: rgba(239, 68, 68, 0.8);
-            color: white;
-        }
+.status-full {
+    background: rgba(239, 68, 68, 0.8);
+    color: white;
+}
 
-        .status-available {
-            background: rgba(34, 197, 94, 0.8);
-            color: white;
-        }
+.status-available {
+    background: rgba(34, 197, 94, 0.8);
+    color: white;
+}
 
-        .empty-state {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-        }
+.room-card form {
+    width: 100%;
+}
 
-        form {
-            margin: 0;
-        }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
+.room-card button {
+    width: 100%;
+}
 
-            .room-card {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
+.empty-state {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+}
 
-            .room-card button {
-                width: 100%;
-            }
+form {
+    margin: 0;
+}
 
-            .quick-join-section {
-                grid-template-columns: 1fr;
-            }
-        }
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .rooms-list {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-join-section {
+        grid-template-columns: 1fr;
+    }
+}

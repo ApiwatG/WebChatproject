@@ -1,0 +1,128 @@
+* {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Figtree', sans-serif;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-image: url('img/login_webnew.png');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                position: relative;
+            }
+
+            body::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 0;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 30px;
+                right: 30px;
+                display: flex;
+                gap: 20px;
+                z-index: 10;
+            }
+
+            .nav-links a {
+                padding: 12px 30px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 10px;
+                color: white;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+            }
+
+            .main-content {
+                position: relative;
+                z-index: 1;
+                text-align: center;
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 6rem;
+                font-weight: 700;
+                color: white;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
+                             0 0 40px rgba(138, 43, 226, 0.5),
+                             0 10px 30px rgba(0, 0, 0, 0.8);
+                margin-bottom: 20px;
+                letter-spacing: 3px;
+                animation: glow 2s ease-in-out infinite alternate;
+            }
+
+            @keyframes glow {
+                from {
+                    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
+                                 0 0 40px rgba(138, 43, 226, 0.5),
+                                 0 10px 30px rgba(0, 0, 0, 0.8);
+                }
+                to {
+                    text-shadow: 0 0 30px rgba(255, 255, 255, 0.5),
+                                 0 0 60px rgba(138, 43, 226, 0.8),
+                                 0 10px 40px rgba(0, 0, 0, 0.8);
+                }
+            }
+
+            .subtitle {
+                font-size: 1.5rem;
+                color: rgba(255, 255, 255, 0.9);
+                text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+                margin-top: 20px;
+            }
+
+            @media (max-width: 768px) {
+                h1 {
+                    font-size: 3rem;
+                }
+
+                .subtitle {
+                    font-size: 1.2rem;
+                }
+
+                .nav-links {
+                    top: 20px;
+                    right: 20px;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .nav-links a {
+                    padding: 10px 20px;
+                    font-size: 14px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                h1 {
+                    font-size: 2rem;
+                }
+
+                .subtitle {
+                    font-size: 1rem;
+                }
+            }

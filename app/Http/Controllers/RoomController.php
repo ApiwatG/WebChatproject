@@ -23,12 +23,20 @@ class RoomController extends Controller
     {
         $request->validate(['name' => 'required|string|max:50']);
 
-        Room::create([
+        $room = Room::create([
             'name' => $request->name,
             'max_users' => 4
         ]);
 
-        return redirect()->route('rooms.index');
+        // Automatically join the creator to the room
+        $userId = Auth::id();
+        $room->users()->attach($userId, [
+            'is_inroom' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('rooms.show', $room->id);
     }
 
     public function join(Room $room)
@@ -64,12 +72,19 @@ class RoomController extends Controller
             ]);
         }
 
+        // Check if room is now empty and delete it
+        $activeUsersCount = $room->users()->wherePivot('is_inroom', true)->count();
+        
+        if ($activeUsersCount === 0) {
+            $room->users()->detach(); // Clean up pivot records
+            $room->delete();
+        }
+
         return redirect()->route('rooms.index');
     }
 
     public function show($id)
     {
-        
         $room = Room::with(['users' => function ($q) {
             $q->wherePivot('is_inroom', true);
         }])->findOrFail($id);
