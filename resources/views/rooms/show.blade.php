@@ -6,157 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $room->name }} - Chat Room</title>
     <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
-    <style>
-        .participants-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .participant-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .participant-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .participant-avatar {
-            flex-shrink: 0;
-        }
-
-        .participant-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .participant-name {
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-
-        .report-btn {
-            padding: 4px 12px;
-            background: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .report-btn:hover {
-            background: #dc2626;
-        }
-
-        .report-btn.active {
-            background: #dc2626;
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Make character preview smaller for participant list */
-        .participant-avatar .character-preview-small {
-            width: 80px;
-        }
-
-        .participant-avatar .character-display-small {
-            height: 100px;
-        }
-
-        .participant-avatar .character-base-small {
-            height: 90%;
-        }
-
-        /* Message selection for reporting */
-        .msg.recv {
-            cursor: default;
-            position: relative;
-        }
-
-        .msg.recv.selectable {
-            cursor: pointer;
-            border-left: 3px solid transparent;
-        }
-
-        .msg.recv.selectable:hover {
-            background: rgba(239, 68, 68, 0.1);
-            border-left: 3px solid #ef4444;
-        }
-
-        .msg.recv.selected-for-report {
-            background: rgba(239, 68, 68, 0.2);
-            border-left: 3px solid #ef4444;
-        }
-
-        .report-mode-banner {
-            padding: 12px;
-            background: linear-gradient(90deg, #ef4444, #dc2626);
-            color: white;
-            text-align: center;
-            font-weight: 600;
-            display: none;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            animation: slideDown 0.3s ease;
-        }
-
-        .report-mode-banner.active {
-            display: block;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .report-mode-banner button {
-            margin-left: 10px;
-            padding: 4px 12px;
-            background: white;
-            color: #ef4444;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .report-mode-banner button:hover {
-            background: #fee;
-        }
-
-        .selected-message-display {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: #999;
-        }
-
-        .selected-message-display strong {
-            color: #fff;
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -281,26 +131,25 @@
 
     function selectMessageForReport(messageElement, user) {
         if (!isReportMode || user !== reportingUserName) return;
-        
-        // Remove previous selection
+    
+     
         document.querySelectorAll('.msg.selected-for-report').forEach(el => {
             el.classList.remove('selected-for-report');
         });
         
-        // Select new message
+     
         messageElement.classList.add('selected-for-report');
         selectedMessage = {
             user: messageElement.dataset.user,
             message: messageElement.dataset.message
         };
         
-        // Open modal with selected message
+   
         openReportModal(reportingUserId, reportingUserName, selectedMessage.message);
     }
 
     function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; }); }
 
-    // Click handler for messages
     box.addEventListener('click', function(e) {
         const msgElement = e.target.closest('.msg.recv.selectable');
         if (msgElement && isReportMode) {
@@ -360,14 +209,13 @@
         reportingUserName = userName;
         selectedMessage = null;
         
-        // Show banner
+     
         document.getElementById('report-mode-banner').classList.add('active');
         document.getElementById('reportingUserName').textContent = userName;
         
-        // Highlight report button
         document.getElementById(`report-btn-${offenderId}`).classList.add('active');
         
-        // Make messages from this user selectable
+    
         document.querySelectorAll('.msg.recv').forEach(msg => {
             if (msg.dataset.user === userName) {
                 msg.classList.add('selectable');
@@ -381,15 +229,14 @@
         reportingUserName = null;
         selectedMessage = null;
         
-        // Hide banner
         document.getElementById('report-mode-banner').classList.remove('active');
         
-        // Remove selections and highlighting
+    
         document.querySelectorAll('.msg.selectable, .msg.selected-for-report').forEach(el => {
             el.classList.remove('selectable', 'selected-for-report');
         });
         
-        // Remove button highlight
+      
         document.querySelectorAll('.report-btn.active').forEach(btn => {
             btn.classList.remove('active');
         });
