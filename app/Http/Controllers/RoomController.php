@@ -33,13 +33,9 @@ class RoomController extends Controller
     public function join(Room $room)
     {
         $userId = Auth::id();
-
-        // Prevent joining if room is full and user is not already in
         if ($room->isFull() && ! $room->users()->where('users.id', $userId)->exists()) {
             return back()->with('error', 'Room is full.');
         }
-
-        // attach or update pivot to set is_inroom = true
         if ($room->users()->where('users.id', $userId)->exists()) {
             $room->users()->updateExistingPivot($userId, [
                 'is_inroom' => true,
@@ -79,4 +75,30 @@ class RoomController extends Controller
 
         return view('rooms.show', compact('room'));
     }
+
+    public function joinByCode(Request $request)
+{
+    $request->validate(['room_code' => 'required|string']);
+    
+    $room = Room::where('code', $request->room_code)->firstOrFail();
+    
+    if ($room->isFull()) {
+        return back()->with('error', 'Room is full');
+    }
+    
+    return redirect()->route('rooms.join', $room->id);
+}
+
+public function quickJoin()
+{
+    $room = Room::where('active_users_count', '<', DB::raw('max_users'))
+                ->inRandomOrder()
+                ->first();
+    
+    if (!$room) {
+        return back()->with('error', 'No available rooms');
+    }
+    
+    return redirect()->route('rooms.join', $room->id);
+}
 }

@@ -12,11 +12,9 @@ class CosmeticController extends Controller
     {
         $user = auth()->user();
         
-        // Get search and filter parameters
         $search = $request->get('search');
         $typeFilter = $request->get('type');
         
-        // Get user's owned cosmetics
         $query = $user->cosmetics()->with(['cosmeticType', 'rarity']);
         
         if ($search) {

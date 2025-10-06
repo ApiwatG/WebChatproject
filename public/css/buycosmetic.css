@@ -43,11 +43,11 @@ body {
 .btn-confirm:hover {
   background: #c41af8;
 }
-.btn-cancle {
+.btn-cancel {
   width: 100%;
   height: 50%;
   display: block;
-  padding: 10px 20px;
+  padding: 4%;
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s ease;

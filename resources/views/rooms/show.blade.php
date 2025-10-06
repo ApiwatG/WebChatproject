@@ -7,14 +7,32 @@
     <title>{{ $room->name }} - Chat Room</title>
     <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
     
+    
 </head>
 <body>
 
+
+<div class="avatars-container">
+    @foreach($room->users as $index => $user)
+        <div class="avatar-wrapper {{ $user->id === auth()->id() ? 'current-user' : '' }}" 
+             data-position="{{ $index }}"
+             data-user-id="{{ $user->id }}">
+            
+            <div class="avatar-username">{{ $user->name }}</div>
+            
+            <x-character-preview 
+                :user="$user" 
+                size="small"
+            />
+        </div>
+    @endforeach
+</div>
+<img src="{{asset('css/img/table.png')}}" alt="table" class="table">
 <div class="container-wrapper">
     <div class="wrap">
         <div class="scene">
             <div class="minilogo">
-                <img src="{{ asset('img/logo.png') }}" alt="Logo">
+                <img src="{{ asset('css/img/logo.png') }}" alt="Logo">
             </div>
         </div>
 
@@ -51,12 +69,6 @@
             <ul class="participants-list">
                 @foreach($room->users as $user)
                     <li class="participant-item" data-user-id="{{ $user->id }}">
-                        <div class="participant-avatar">
-                            <x-character-preview 
-                                :user="$user" 
-                                size="small"
-                            />
-                        </div>
                         <div class="participant-info">
                             <div class="participant-name">{{ $user->name }}</div>
                             @if($user->id !== auth()->id())
@@ -132,19 +144,16 @@
     function selectMessageForReport(messageElement, user) {
         if (!isReportMode || user !== reportingUserName) return;
     
-     
         document.querySelectorAll('.msg.selected-for-report').forEach(el => {
             el.classList.remove('selected-for-report');
         });
         
-     
         messageElement.classList.add('selected-for-report');
         selectedMessage = {
             user: messageElement.dataset.user,
             message: messageElement.dataset.message
         };
         
-   
         openReportModal(reportingUserId, reportingUserName, selectedMessage.message);
     }
 
@@ -209,13 +218,11 @@
         reportingUserName = userName;
         selectedMessage = null;
         
-     
         document.getElementById('report-mode-banner').classList.add('active');
         document.getElementById('reportingUserName').textContent = userName;
         
         document.getElementById(`report-btn-${offenderId}`).classList.add('active');
         
-    
         document.querySelectorAll('.msg.recv').forEach(msg => {
             if (msg.dataset.user === userName) {
                 msg.classList.add('selectable');
@@ -231,12 +238,10 @@
         
         document.getElementById('report-mode-banner').classList.remove('active');
         
-    
         document.querySelectorAll('.msg.selectable, .msg.selected-for-report').forEach(el => {
             el.classList.remove('selectable', 'selected-for-report');
         });
         
-      
         document.querySelectorAll('.report-btn.active').forEach(btn => {
             btn.classList.remove('active');
         });

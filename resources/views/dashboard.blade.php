@@ -21,9 +21,9 @@
 
             <div class="container">
                 <div class="message">let's find someone to talk!!!!</div>
-                <button class="btn-join">
-                    <a href="{{route('rooms.index')}}">join the party ★</a>
-                </button>
+                
+                    <a href="{{route('rooms.index')}}"><button class="btn-join">join the party ★</button></a>
+               
             </div>
         </div>
 

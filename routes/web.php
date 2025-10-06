@@ -47,6 +47,9 @@ Route::middleware([
     Route::get('/cosmetic', [CosmeticController::class, 'index'])->name('cosmetic.index');
     Route::post('/cosmetic/{cosmetic}/equip', [CosmeticController::class, 'equip'])->name('cosmetic.equip');
     Route::post('/cosmetic/{cosmetic}/unequip', [CosmeticController::class, 'unequip'])->name('cosmetic.unequip');
+
+    Route::post('/rooms/join-by-code', [RoomController::class, 'joinByCode'])->name('rooms.joinByCode');
+Route::post('/rooms/quick-join', [RoomController::class, 'quickJoin'])->name('rooms.quickJoin');
 });
 
 
