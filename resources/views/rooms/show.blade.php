@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,6 +46,16 @@
                     required>
                 <button type="submit">Send</button>
             </form>
+=======
+<head>@vite(['resources/js/app.js'])</head>
+<link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
+<div class="wrap">
+    {{-- Left Scene Area --}}
+    <div class="scene">
+        {{-- Your game/content area here --}}
+        <div class="minilogo">
+            <img src="{{ asset('img/logo.png') }}" alt="Game Logo" onerror="this.style.display='none'">
+>>>>>>> Stashed changes
         </div>
     </div>
 
@@ -59,11 +70,41 @@
         const currentUserId = {{ auth()->id() }};
         let soundEnabled = true;
 
+<<<<<<< Updated upstream
         function toggleSound() {
             soundEnabled = !soundEnabled;
             document.querySelector('.sound').textContent = soundEnabled ? '🔊' : '🔇';
         }
     </script>
+=======
+<script>
+    const roomId = "{{ $room->id }}";
+    const currentUser = "{{ auth()->user()->name }}";
+    let soundEnabled = true;
+
+    function toggleSound() {
+        soundEnabled = !soundEnabled;
+        document.querySelector('.sound').textContent = soundEnabled ? '🔊' : '🔇';
+    }
+
+    function addMessage(user, message, isSent = false, time = null) {
+        const messagesDiv = document.getElementById("messages");
+        const msgDiv = document.createElement('div');
+        msgDiv.className = isSent ? 'msg sent' : 'msg recv';
+        
+        if (!isSent) {
+            msgDiv.innerHTML = `<strong>${user}:</strong> ${message}`;
+        } else {
+            msgDiv.innerHTML = `<strong>You:</strong> ${message}`;
+        }
+            if (time) {
+            msgDiv.innerHTML += `<small>${time}</small>`;
+        }
+        
+        messagesDiv.appendChild(msgDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+>>>>>>> Stashed changes
 
     <!-- Removed Pusher JS and chat.js, use only Echo for real-time chat -->
     <script>
@@ -104,6 +145,7 @@
             console.error('Echo not loaded!');
         }
 
+<<<<<<< Updated upstream
         // Send Message Function
         async function sendMessage(e) {
             e.preventDefault();
@@ -341,6 +383,22 @@
                     e.preventDefault();
                     document.getElementById("chat-form").dispatchEvent(new Event('submit'));
                 }
+=======
+    // Listen for new messages
+    if (window.Echo) {
+        window.Echo.join(`chat.${roomId}`)
+            .here((users) => {
+                console.log('Users currently in room:', users);
+            })
+            .joining((user) => {
+                console.log(user.name + ' joined the room');
+            })
+            .leaving((user) => {
+                console.log(user.name + ' left the room');
+            })
+            .listen('MessageSent', (e) => {
+                addMessage(e.user, e.message, e.user === currentUser, e.time);
+>>>>>>> Stashed changes
             });
 
             // Cleanup when leaving page

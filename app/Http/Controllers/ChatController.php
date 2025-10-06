@@ -21,6 +21,7 @@ class ChatController extends Controller
             return response()->json(['status' => 'error', 'error' => 'Not authenticated'], 401);
         }
 
+<<<<<<< Updated upstream
         try {
             $cacheKey = "room:{$roomId}:messages";
             $messages = Cache::get($cacheKey, []);
@@ -32,6 +33,15 @@ class ChatController extends Controller
             Cache::put($cacheKey, $messages, 3600);
 
             event(new MessageSent($roomId, $user->name, $message, now()->toIso8601String()));
+=======
+        $cacheKey = "room:{$roomId}:messages";
+        $messages = Cache::get($cacheKey, []);
+        $time = now()->toIso8601String();
+        $messages[] = ['user' => $user->name, 'message' => $message, 'time' => $time];
+        Cache::put($cacheKey, $messages, 3600);
+
+        broadcast(new MessageSent($roomId, $user->name, $message, $time))->toOthers();
+>>>>>>> Stashed changes
 
             return response()->json([
                 'status' => 'success',

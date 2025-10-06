@@ -13,9 +13,9 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','App\Http\Controllers\PusherController@index');
+Route::post('/broadcast','App\Http\Controllers\PusherController@broadcast');
+Route::post('/receive','App\Http\Controllers\PusherController@receive');
 
 Route::middleware([
     'auth:sanctum',
@@ -53,7 +53,19 @@ Route::middleware([
 
 });
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+
+Route::get('/test', function () {
+    return view('test');
+});
+
+
+
+
+    
+>>>>>>> Stashed changes
 
 
 
