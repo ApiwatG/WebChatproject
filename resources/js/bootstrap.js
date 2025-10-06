@@ -16,6 +16,7 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
  */
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 // import Echo from 'laravel-echo';
 
 // import Pusher from 'pusher-js';
@@ -32,6 +33,8 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 //     enabledTransports: ['ws', 'wss'],
 // });
 =======
+=======
+>>>>>>> Stashed changes
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 window.Pusher = Pusher;
@@ -43,4 +46,7 @@ window.Echo = new Echo({
     forceTLS: true,
     encrypted: true,
 });
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
