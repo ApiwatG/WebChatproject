@@ -25,7 +25,37 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+<<<<<<< Updated upstream
 });
+=======
+    Route::get('/shop', [shopcontroller::class, 'index'])->name('shop.index');
+    Route::get('/cosmetic', [cosmeticcontroller::class, 'index'])->name('cosmetic.index');
+    Route::get('/rooms', [
+        RoomController
+
+
+            ::class,
+        'index'
+    ])->name('rooms.index');
+    Route::post('/rooms', [RoomController::class, 'store'])->name('rooms.store');
+    Route::post('/rooms/{room}/join', [RoomController::class, 'join'])->name('rooms.join');
+
+
+
+
+
+    Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
+    Route::post('/rooms/{room}/send', [RoomController::class, 'sendMessage'])->name('rooms.sendMessage');
+    Route::post('/rooms/{room}/report', [RoomController::class, 'reportMessage'])->name('rooms.report');
+    Route::get('/chat/{roomId}/messages', [ChatController::class, 'getMessages']);
+    Route::post('/chat/{roomId}/send', [ChatController::class, 'sendMessage']);
+    Route::post('/chat/{roomId}/report', [ChatController::class, 'reportMessage']);
+
+});
+
+
+
+>>>>>>> Stashed changes
 
 Route::get('/home', function () {
     return view('home');
