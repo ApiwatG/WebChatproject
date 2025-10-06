@@ -1,27 +1,94 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms - Game Lobby</title>
+    <link rel="stylesheet" href="{{ asset('css/room.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ route('dashboard')}}" class="btn-back">← Back</a>
+        
+        <h1>Game Rooms</h1>
 
-@section('content')
-<button class="btn-join"><a href="{{route('dashboard')}}"><-</a></button>
-<h1 class="text-2xl font-bold mb-4">Rooms</h1>
+      
+        <div class="quick-join-section">
+            <div class="feature-card blue">
+                <h3>🎲 Quick Join</h3>
+                <p>Join a random available room instantly</p>
+                <form method="POST" action="{{ route('rooms.quickJoin') }}">
+                    <button type="submit" class="btn-blue btn-full">Quick Join</button>
+                </form>
+            </div>
 
-@foreach($rooms as $room)
-<div class="border p-3 mb-3 rounded">
-    <strong>{{ $room->name }}</strong> ({{ $room->active_users_count ?? 0 }}/{{ $room->max_users }})
-    @if($room->isFull())
-        <span class="text-red-500 ml-2">Full</span>
-    @else
-        <form method="POST" action="{{ route('rooms.join', $room->id) }}" class="inline">
-            @csrf
-            <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">Join</button>
-        </form>
-    @endif
+            <!-- Join by Room ID -->
+            <div class="feature-card purple">
+                <h3>🔑 Join by Room ID</h3>
+                <p>Enter a room ID or code to join</p>
+                <form method="POST" action="{{ route('rooms.joinByCode') }}">
+                    @csrf
+            <input type="text" name="room_code" placeholder="Enter Room ID" required>
+                        <button type="submit" class="btn-purple">Join</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <h2 class="section-title">Available Rooms</h2>
+        <div class="rooms-list">
+           @forelse($rooms as $room)
+            <div class="room-card">
+            <div class="room-info">
+            <div>
+            <strong>{{ $room->name }}</strong>
+            <span class="count-count">
+                ({{ $room->active_users_count ?? 0 }}/{{ $room->max_users }})
+            </span>
+            <span class="room-id">ID: {{ $room->id }}</span>
+            @if($room->isFull())
+                <span class="status-badge status-full">🔒 Full</span>
+            @else
+                <span class="status-badge status-available">✓ Available</span>
+            @endif
+            </div>
+        </div>
+        @if(!$room->isFull())
+            <form method="POST" action="{{ route('rooms.join', $room->id) }}">
+                @csrf
+                <button type="submit" class="btn-blue">
+                    Join
+                </button>
+            </form>
+              </div>
+        @endif
+    </div>
+    @empty
+    <p class="empty-state">No rooms available. Create one below!</p>
+    @endforelse
+
+    
 </div>
-@endforeach
+        </div>
 
-<h2 class="text-xl font-semibold mt-6 mb-2">Create a New Room</h2>
-<form method="POST" action="{{ route('rooms.store') }}">
-    @csrf
-    <input type="text" name="name" placeholder="Room Name" required class="border px-2 py-1 rounded w-64">
-    <button type="submit" class="bg-green-500 text-white px-4 py-1 rounded ml-2">Create Room</button>
-</form>
-@endsection
+        <!-- Create New Room -->
+        <div class="feature-card green">
+            <h3>➕ Create a New Room</h3>
+            <form method="POST" action="{{ route('rooms.store') }}">
+                @csrf
+                <div class="input-group">
+                    <input 
+            type="text" 
+            name="name" 
+            placeholder="Room Name" 
+            required 
+            maxlength="50">
+                    <button type="submit" class="btn-green">Create Room</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

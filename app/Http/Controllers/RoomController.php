@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\RoomParticipant;
 
 class RoomController extends Controller
@@ -68,7 +69,7 @@ class RoomController extends Controller
 
     public function show($id)
     {
-        // load room and only include users currently in room (is_inroom = true)
+        
         $room = Room::with(['users' => function ($q) {
             $q->wherePivot('is_inroom', true);
         }])->findOrFail($id);
@@ -77,28 +78,32 @@ class RoomController extends Controller
     }
 
     public function joinByCode(Request $request)
-{
-    $request->validate(['room_code' => 'required|string']);
-    
-    $room = Room::where('code', $request->room_code)->firstOrFail();
-    
-    if ($room->isFull()) {
-        return back()->with('error', 'Room is full');
+    {
+        $request->validate(['room_code' => 'required|string']);
+        
+        $room = Room::where('id', $request->room_code)
+                    ->first();
+        
+        if (!$room) {
+            return back()->with('error', 'Room not found');
+        }
+        
+        return $this->join($room);
     }
-    
-    return redirect()->route('rooms.join', $room->id);
-}
 
-public function quickJoin()
-{
-    $room = Room::where('active_users_count', '<', DB::raw('max_users'))
-                ->inRandomOrder()
-                ->first();
-    
-    if (!$room) {
-        return back()->with('error', 'No available rooms');
+    public function quickJoin()
+    {
+        $userId = Auth::id();
+        
+        $room = Room::withCount('activeUsers')
+                    ->havingRaw('active_users_count < max_users')
+                    ->inRandomOrder()
+                    ->first();
+        
+        if (!$room) {
+            return back()->with('error', 'No available rooms');
+        }
+        
+        return $this->join($room);
     }
-    
-    return redirect()->route('rooms.join', $room->id);
-}
 }
