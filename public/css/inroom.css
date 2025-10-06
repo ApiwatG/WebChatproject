@@ -14,7 +14,7 @@ body {
   font-family: Inter, system-ui, Arial, sans-serif;
   background-image: url("img/Inroom.png");
   background-size: cover;
-  background-position: center;
+  background-position: -100px 90%;
   color: #111;
 }
 
@@ -26,13 +26,13 @@ body {
   box-sizing: border-box;
 }
 
-/* Left scene */
+
 .scene {
   flex: 1;
   position: relative;
-  border-radius: 14px;
+
   overflow: hidden;
-  background: rgba(15, 22, 51, 0.3);
+  
 }
 
 /* Minigame logo */
@@ -58,6 +58,7 @@ body {
 /* Right chat panel */
 .chatPanel {
   width: 450px;
+  margin-left: 40%;
   background: var(--panel);
   border-radius: 16px;
   display: flex;
