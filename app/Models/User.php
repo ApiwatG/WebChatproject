@@ -22,6 +22,9 @@ class User extends Authenticatable
         'email',
         'password',
         'coins',
+        'is_active',
+        'banned_at',
+        'ban_reason',
     ];
 
     protected $hidden = [
@@ -33,12 +36,40 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'banned_at' => 'datetime',
         'coins' => 'integer',
+        'is_active' => 'boolean',
     ];
 
     protected $appends = [
         'profile_photo_url',
     ];
+
+    // Check if user is banned
+    public function isBanned()
+    {
+        return !$this->is_active;
+    }
+
+    // Ban user
+    public function ban($reason = null)
+    {
+        $this->update([
+            'is_active' => false,
+            'banned_at' => now(),
+            'ban_reason' => $reason,
+        ]);
+    }
+
+    // Unban user
+    public function unban()
+    {
+        $this->update([
+            'is_active' => true,
+            'banned_at' => null,
+            'ban_reason' => null,
+        ]);
+    }
 
     public function rooms()
     {
@@ -49,17 +80,27 @@ class User extends Authenticatable
 
     public function cosmetics()
     {
-        return $this->belongsToMany(Cosmetic::class, 'user_cosmetics')
+        return $this->belongsToMany(Cosmetic::class, 'user_cosmetics', 'user_id', 'cosmetic_id')
             ->withPivot('is_equipped', 'acquired_at')
             ->withTimestamps();
     }
 
     public function equippedCosmetics()
     {
-        return $this->belongsToMany(Cosmetic::class, 'user_cosmetics')
+        return $this->belongsToMany(Cosmetic::class, 'user_cosmetics', 'user_id', 'cosmetic_id')
             ->wherePivot('is_equipped', true)
             ->withPivot('is_equipped', 'acquired_at')
             ->withTimestamps();
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'reported_user_id');
+    }
+
+    public function reportsMade()
+    {
+        return $this->hasMany(Report::class, 'reporter_id');
     }
 
     public function getEquippedCosmeticByType($typeId)

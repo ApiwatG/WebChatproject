@@ -7,12 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
-       protected $fillable = ['reporter_id', 'offender_id', 'message'];
+    use HasFactory;
 
-    public function participant()
-    {
-        return $this->belongsTo(RoomParticipant::class);
-    }
+    protected $fillable = [
+        'reporter_id',
+        'offender_id',
+        'message',
+        'Report_message',  
+        'status',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function reporter()
     {
