@@ -39,7 +39,7 @@ Route::middleware([
     Route::get('/chat/{roomId}/messages', [ChatController::class, 'getMessages']);
     Route::post('/chat/{roomId}/send', [ChatController::class, 'sendMessage']);
     Route::post('/chat/{roomId}/report', [ChatController::class, 'reportMessage']);
-
-});
     
-
+    // Game routes
+    Route::post('/game/{roomId}/move', [GameController::class, 'move']);
+});
