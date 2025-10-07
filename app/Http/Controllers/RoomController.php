@@ -125,4 +125,6 @@ public function quickJoin()
 
     return $this->join($room);
 }
+
+
 }
