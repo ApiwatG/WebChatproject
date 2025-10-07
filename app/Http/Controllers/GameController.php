@@ -13,6 +13,25 @@ class GameController extends Controller
         [0, 4, 8], [2, 4, 6]             // Diagonals
     ];
 
+    public function request(Request $request, $roomId)
+    {
+        $event = new GameRequest($roomId, $request->requester);
+        broadcast($event);
+        return response()->json(['status' => 'success', 'event' => $event]);
+    }
+
+    public function accept(Request $request, $roomId)
+    {
+        broadcast(new GameResponse($roomId, $request->responder, true));
+        return response()->json(['status' => 'success']);
+    }
+
+    public function decline(Request $request, $roomId)
+    {
+        broadcast(new GameResponse($roomId, $request->responder, false));
+        return response()->json(['status' => 'success']);
+    }
+
     public function move(Request $request, $roomId)
     {
         $position = $request->position;
@@ -24,6 +43,12 @@ class GameController extends Controller
         // Broadcast the move
         broadcast(new GameMove($roomId, $player, $position, $gameState))->toOthers();
         
+        return response()->json(['status' => 'success']);
+    }
+
+    public function reset(Request $request, $roomId)
+    {
+        broadcast(new GameMove($roomId, 'X', null, ['reset' => true]))->toOthers();
         return response()->json(['status' => 'success']);
     }
 

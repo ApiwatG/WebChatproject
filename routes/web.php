@@ -41,5 +41,9 @@ Route::middleware([
     Route::post('/chat/{roomId}/report', [ChatController::class, 'reportMessage']);
     
     // Game routes
+    Route::post('/game/{roomId}/request', [GameController::class, 'request']);
+    Route::post('/game/{roomId}/accept', [GameController::class, 'accept']);
+    Route::post('/game/{roomId}/decline', [GameController::class, 'decline']);
     Route::post('/game/{roomId}/move', [GameController::class, 'move']);
+    Route::post('/game/{roomId}/reset', [GameController::class, 'reset']);
 });

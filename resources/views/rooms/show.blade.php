@@ -56,11 +56,11 @@
 </div>
 
 <script>
-    const roomId = "{{ $room->id }}";
-    const currentUser = "{{ auth()->user()->name }}";
-    let soundEnabled = true;
-
-    function toggleSound() {
+const roomId = "{{ $room->id }}";
+const currentUser = "{{ auth()->user()->name }}";
+let soundEnabled = true;
+let playerSymbol = '';  // 'X' or 'O'
+let isMyTurn = false;    function toggleSound() {
         soundEnabled = !soundEnabled;
         document.querySelector('.sound').textContent = soundEnabled ? '🔊' : '🔇';
     }
@@ -93,7 +93,60 @@
 
     // Listen for game moves and messages
     if (window.Echo) {
-        window.Echo.channel(`game.${roomId}`)
+        // Listen for game requests
+window.Echo.channel(`game.${roomId}`)
+            .listen('.GameRequest', (e) => {
+                console.log('Game request received:', e);
+                if (e.requester !== currentUser) {
+                    pendingGameRequest = true;
+                    document.getElementById('gameRequestOverlay').classList.add('active');
+                    document.getElementById('gameRequestStatus').textContent = `${e.requester} wants to play Tic-Tac-Toe!`;
+                    document.getElementById('gameRequestButtons').style.display = 'flex';
+                }
+            })
+            .listen('GameResponse', (e) => {
+                clearTimeout(gameRequestTimeout);
+                if (e.accepted) {
+                    if (e.responder !== currentUser) {
+                        document.getElementById('gameRequestOverlay').classList.remove('active');
+                        document.getElementById('gameOverlay').classList.add('active');
+                    }
+                } else {
+                    if (e.responder !== currentUser) {
+                        document.getElementById('gameRequestOverlay').classList.remove('active');
+                        alert('Game request was declined');
+                    }
+                }
+            });
+
+window.Echo.join(`game.${roomId}`)
+            .here((users) => {
+                // Assign player symbols based on join order
+                if (users.length === 1) {
+                    playerSymbol = 'X';
+                    isMyTurn = true;
+                    document.getElementById('gameStatus').textContent = "Waiting for opponent...";
+                } else if (users.length === 2 && !playerSymbol) {
+                    playerSymbol = 'O';
+                    isMyTurn = false;
+                }
+                if (users.length === 2) {
+                    gameActive = true;
+                    document.getElementById('gameStatus').textContent = "Player X's Turn";
+                }
+            })
+            .joining((user) => {
+                if (!playerSymbol) {
+                    playerSymbol = 'O';
+                    isMyTurn = false;
+                    gameActive = true;
+                    document.getElementById('gameStatus').textContent = "Player X's Turn";
+                }
+            })
+            .leaving(() => {
+                gameActive = false;
+                document.getElementById('gameStatus').textContent = "Opponent left the game";
+            })
             .listen('GameMove', (e) => {
                 // Update game board
                 const cell = document.querySelector(`.ttt-cell[data-index="${e.position}"]`);
@@ -117,7 +170,8 @@
                     }
                 } else {
                     currentPlayer = e.player === 'X' ? 'O' : 'X';
-                    document.getElementById('gameStatus').textContent = `Player ${currentPlayer}'s Turn`;
+                    isMyTurn = currentPlayer === playerSymbol;
+                    document.getElementById('gameStatus').textContent = `Player ${currentPlayer}'s Turn${isMyTurn ? ' (Your turn)' : ''}`;
                 }
             });
             
@@ -195,25 +249,85 @@ const winningConditions = [
     [0, 4, 8], [2, 4, 6]              // Diagonals
 ];
 
+let gameRequestTimeout;
+let pendingGameRequest = false;
+
 function openGame() {
-    document.getElementById('gameOverlay').classList.add('active');
+    console.log('Sending game request...');
+    // Send game request to other player
+    axios.post(`/game/${roomId}/request`, {
+        requester: currentUser,
+        _token: document.querySelector('meta[name="csrf-token"]').content
+    })
+    .then(response => {
+        console.log('Game request sent:', response);
+        // Show waiting popup for requester
+        document.getElementById('gameRequestOverlay').classList.add('active');
+        document.getElementById('gameRequestStatus').textContent = 'Waiting for other player to accept...';
+        document.getElementById('gameRequestButtons').style.display = 'none';
+        
+        // Set timeout for request
+        gameRequestTimeout = setTimeout(() => {
+            closeGameRequest();
+            alert('Game request timed out');
+        }, 30000); // 30 seconds timeout
+    })
+    .catch(error => {
+        console.error('Error sending game request:', error);
+        alert('Failed to send game request. Please try again.');
+    });
 }
 
 function closeGame() {
     document.getElementById('gameOverlay').classList.remove('active');
+    resetGame();
+}
+
+function closeGameRequest() {
+    document.getElementById('gameRequestOverlay').classList.remove('active');
+    clearTimeout(gameRequestTimeout);
+    if (pendingGameRequest) {
+        // Send decline if there's a pending request
+        declineGame();
+    }
+}
+
+function acceptGame() {
+    axios.post(`/game/${roomId}/accept`, {
+        responder: currentUser,
+        _token: document.querySelector('meta[name="csrf-token"]').content
+    });
+    document.getElementById('gameRequestOverlay').classList.remove('active');
+    document.getElementById('gameOverlay').classList.add('active');
+    pendingGameRequest = false;
+}
+
+function declineGame() {
+    axios.post(`/game/${roomId}/decline`, {
+        responder: currentUser,
+        _token: document.querySelector('meta[name="csrf-token"]').content
+    });
+    document.getElementById('gameRequestOverlay').classList.remove('active');
+    pendingGameRequest = false;
 }
 
 function resetGame() {
-    board = ['', '', '', '', '', '', '', '', ''];
-    currentPlayer = 'X';
-    gameActive = true;
-    document.getElementById('gameStatus').textContent = "Player X's Turn";
-    
-    document.querySelectorAll('.ttt-cell').forEach(cell => {
-        cell.textContent = '';
-        cell.classList.remove('disabled');
-        cell.removeAttribute('data-player');
-        cell.style.backgroundColor = '#f0f0f0';
+    // Send reset request to server
+    axios.post(`/game/${roomId}/reset`, {
+        _token: document.querySelector('meta[name="csrf-token"]').content
+    }).then(() => {
+        board = ['', '', '', '', '', '', '', '', ''];
+        currentPlayer = 'X';
+        isMyTurn = playerSymbol === 'X';
+        gameActive = true;
+        document.getElementById('gameStatus').textContent = `Player X's Turn${isMyTurn ? ' (Your turn)' : ''}`;
+        
+        document.querySelectorAll('.ttt-cell').forEach(cell => {
+            cell.textContent = '';
+            cell.classList.remove('disabled');
+            cell.removeAttribute('data-player');
+            cell.style.backgroundColor = '#f0f0f0';
+        });
     });
 }
 
@@ -236,14 +350,15 @@ function handleCellClick(e) {
     const cell = e.target;
     const index = parseInt(cell.dataset.index);
     
-    if (board[index] !== '' || !gameActive) {
+    if (board[index] !== '' || !gameActive || currentPlayer !== playerSymbol) {
         return;
     }
     
     // Send move to server
     axios.post(`/game/${roomId}/move`, {
         position: index,
-        player: currentPlayer,
+        player: playerSymbol,
+        board: board,
         _token: document.querySelector('meta[name="csrf-token"]').content
     });
 }
@@ -276,13 +391,28 @@ document.getElementById('gameOverlay').addEventListener('click', function(e) {
     🎮
 </div>
 
+{{-- Game Request Popup --}}
+<div class="game-overlay" id="gameRequestOverlay">
+    <div class="game-popup" style="max-width: 300px;">
+        <span class="game-close" onclick="closeGameRequest()">&times;</span>
+        <h2 style="text-align: center; margin-bottom: 20px;">Game Request</h2>
+        <div id="gameRequestStatus" style="text-align: center; margin-bottom: 20px;">
+            Waiting for response...
+        </div>
+        <div id="gameRequestButtons" style="display: flex; justify-content: center; gap: 10px;">
+            <button class="game-accept" onclick="acceptGame()" style="background-color: #4CAF50;">Accept</button>
+            <button class="game-decline" onclick="declineGame()" style="background-color: #f44336;">Decline</button>
+        </div>
+    </div>
+</div>
+
 {{-- Game Popup --}}
 <div class="game-overlay" id="gameOverlay">
     <div class="game-popup">
         <span class="game-close" onclick="closeGame()">&times;</span>
         <h2 style="text-align: center; margin-bottom: 10px;">Tic-Tac-Toe</h2>
         
-        <div class="game-status" id="gameStatus">Player X's Turn</div>
+        <div class="game-status" id="gameStatus">Waiting for players...</div>
         
         <div class="ttt-board" id="tttBoard">
             <div class="ttt-cell" data-index="0"></div>
@@ -299,6 +429,50 @@ document.getElementById('gameOverlay').addEventListener('click', function(e) {
         <button class="game-reset" onclick="resetGame()">Reset Game</button>
     </div>
 </div>
+
+<style>
+.game-accept, .game-decline {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.game-accept:hover {
+    background-color: #45a049;
+}
+
+.game-decline:hover {
+    background-color: #da190b;
+}
+
+.game-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.game-overlay.active {
+    display: flex;
+}
+
+.game-popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    min-width: 300px;
+}
+</style>
 
 <script src="{{ asset('js/game.js') }}" defer></script>
 </body>
