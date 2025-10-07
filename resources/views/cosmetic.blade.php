@@ -91,7 +91,6 @@
   <script>
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     
-    // Search functionality
     document.getElementById('searchInput').addEventListener('input', function(e) {
       filterCosmetics();
     });

@@ -10,7 +10,7 @@
     
 </head>
 <body>
-
+<x-toast />
 
 <div class="avatars-container">
     @foreach($room->users as $index => $user)

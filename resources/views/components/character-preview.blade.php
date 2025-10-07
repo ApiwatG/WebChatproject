@@ -25,7 +25,7 @@
         overflow: hidden;
     }
 
-    /* Character base layer */
+
     .character-base-{{ $size }} {
         position: absolute;
         bottom: 0;
@@ -37,7 +37,7 @@
         z-index: 1;
     }
 
-    /* Cosmetic layers */
+
     .cosmetic-layer-{{ $size }} {
         position: absolute;
         object-fit: contain;
@@ -45,7 +45,7 @@
         pointer-events: none;
     }
 
-    /* Positioning for different cosmetic types */
+
     .cosmetic-layer-{{ $size }}.hat {
         top: -30%;
         left: 57%;
@@ -56,35 +56,34 @@
     }
 
     .cosmetic-layer-{{ $size }}.outfit {
-        top: 28%;
-        left: 50%;
+        top: -4%;
+        left: 55%;
         transform: translateX(-50%);
-        width: 50%;
+        width: 205%;
         height: auto;
         z-index: 2;
     }
 
     .cosmetic-layer-{{ $size }}.accessory {
-        top: 32%;
-        left: 50%;
+        top: 10%;
+        left: 55%;
         transform: translateX(-50%);
-        width: 40%;
+        width: 130%;
         height: auto;
-        z-index: 4;
+        z-index: 5;
     }
 </style>
 
 <div class="character-preview-{{ $size }}">
     <div class="character-display-{{ $size }}">
-        <!-- Character Base -->
+   
         <img 
             src="{{ asset('css/img/character-base.png') }}" 
             alt="Character" 
             class="character-base-{{ $size }}"
             onerror="this.style.display='none';"
         >
-        
-        <!-- Equipped Cosmetics Overlay -->
+
         @foreach($equippedCosmetics as $cosmetic)
             <img 
                 src="{{ $cosmetic->image_url }}" 

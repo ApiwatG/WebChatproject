@@ -1,5 +1,6 @@
 <x-guest-layout>
     <x-authentication-card>
+        <x-toast />
         <x-slot name="logo">
              <h1>The Twilight bar</h1>
         </x-slot>

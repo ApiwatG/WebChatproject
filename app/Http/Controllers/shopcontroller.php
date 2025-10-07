@@ -13,12 +13,12 @@ class ShopController extends Controller
     {
         $user = auth()->user();
         
-        // Get filter parameters
+       
         $rarityFilter = $request->get('rarity');
         $typeFilter = $request->get('type');
         $search = $request->get('search');
         
-        // Build query
+     
         $query = Cosmetic::with(['rarity', 'cosmeticType']);
         
         if ($rarityFilter) {
@@ -35,10 +35,10 @@ class ShopController extends Controller
         
         $cosmetics = $query->get();
         
-        // Get user's owned cosmetic IDs
+      
         $ownedCosmeticIds = $user->cosmetics()->pluck('cosmetic_id')->toArray();
         
-        // Get filter options
+      
         $rarities = Rarity::all();
         $types = CosmeticType::all();
         

@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="{{ asset('css/room.css') }}">
 </head>
 <body>
+    <x-toast />
     <div class="container">
         <a href="{{ route('dashboard')}}" class="btn-back">← Back</a>
         
         <h1>Game Rooms</h1>
 
-        <!-- Quick Join Section -->
         <div class="quick-join-section">
             <div class="feature-card blue">
                 <h3>🎲 Quick Join</h3>
@@ -23,7 +23,7 @@
                 </form>
             </div>
 
-            <!-- Join by Room ID -->
+      
             <div class="feature-card purple">
                 <h3>🔑 Join by Room ID</h3>
                 <p>Enter a room ID or code to join</p>
@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <!-- Available Rooms Section -->
+ 
         <h2 class="section-title">Available Rooms</h2>
         <div class="rooms-list">
             @forelse($rooms as $room)
@@ -66,7 +66,7 @@
             @endforelse
         </div>
 
-        <!-- Create New Room -->
+
         <div class="feature-card green">
             <h3>➕ Create a New Room</h3>
             <form method="POST" action="{{ route('rooms.store') }}">
@@ -83,5 +83,7 @@
             </form>
         </div>
     </div>
+
+    
 </body>
 </html>

@@ -28,7 +28,7 @@ class RoomController extends Controller
             'max_users' => 4
         ]);
 
-        // Automatically join the creator to the room
+
         $userId = Auth::id();
         $room->users()->attach($userId, [
             'is_inroom' => true,
@@ -72,11 +72,11 @@ class RoomController extends Controller
             ]);
         }
 
-        // Check if room is now empty and delete it
+
         $activeUsersCount = $room->users()->wherePivot('is_inroom', true)->count();
         
         if ($activeUsersCount === 0) {
-            $room->users()->detach(); // Clean up pivot records
+            $room->users()->detach(); 
             $room->delete();
         }
 
@@ -106,19 +106,21 @@ class RoomController extends Controller
         return $this->join($room);
     }
 
-    public function quickJoin()
-    {
-        $userId = Auth::id();
-        
-        $room = Room::withCount('activeUsers')
-                    ->havingRaw('active_users_count < max_users')
-                    ->inRandomOrder()
-                    ->first();
-        
-        if (!$room) {
-            return back()->with('error', 'No available rooms');
-        }
-        
-        return $this->join($room);
+public function quickJoin()
+{
+    $userId = Auth::id();
+
+    $room = Room::whereRaw('(select count(*) from `users` 
+    inner join `room_participants` on `users`.`id` = `room_participants`
+    .`user_id` where `rooms`.`id` = `room_participants`.`room_id`
+     and `room_participants`.`is_inroom` = 1) < max_users')
+                ->inRandomOrder()
+                ->first();
+
+    if (!$room) {
+        return back()->with('error', 'No available rooms');
     }
+
+    return $this->join($room);
+}
 }
