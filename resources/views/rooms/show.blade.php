@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Game Room</title>
+    <title>ห้องคุย {{ $room->name }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/game.css') }}">
@@ -252,8 +252,21 @@ const winningConditions = [
 let gameRequestTimeout;
 let pendingGameRequest = false;
 
+let playingWithBot = false;
+
 function openGame() {
+    document.getElementById('gameModeOverlay').classList.add('active');
+}
+
+function closeGameMode() {
+    document.getElementById('gameModeOverlay').classList.remove('active');
+}
+
+function startMultiplayerGame() {
     console.log('Sending game request...');
+    closeGameMode();
+    playingWithBot = false;
+    
     // Send game request to other player
     axios.post(`/game/${roomId}/request`, {
         requester: currentUser,
@@ -281,34 +294,6 @@ function openGame() {
 function closeGame() {
     document.getElementById('gameOverlay').classList.remove('active');
     resetGame();
-}
-
-function closeGameRequest() {
-    document.getElementById('gameRequestOverlay').classList.remove('active');
-    clearTimeout(gameRequestTimeout);
-    if (pendingGameRequest) {
-        // Send decline if there's a pending request
-        declineGame();
-    }
-}
-
-function acceptGame() {
-    axios.post(`/game/${roomId}/accept`, {
-        responder: currentUser,
-        _token: document.querySelector('meta[name="csrf-token"]').content
-    });
-    document.getElementById('gameRequestOverlay').classList.remove('active');
-    document.getElementById('gameOverlay').classList.add('active');
-    pendingGameRequest = false;
-}
-
-function declineGame() {
-    axios.post(`/game/${roomId}/decline`, {
-        responder: currentUser,
-        _token: document.querySelector('meta[name="csrf-token"]').content
-    });
-    document.getElementById('gameRequestOverlay').classList.remove('active');
-    pendingGameRequest = false;
 }
 
 function resetGame() {
@@ -429,50 +414,6 @@ document.getElementById('gameOverlay').addEventListener('click', function(e) {
         <button class="game-reset" onclick="resetGame()">Reset Game</button>
     </div>
 </div>
-
-<style>
-.game-accept, .game-decline {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.game-accept:hover {
-    background-color: #45a049;
-}
-
-.game-decline:hover {
-    background-color: #da190b;
-}
-
-.game-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.game-overlay.active {
-    display: flex;
-}
-
-.game-popup {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    position: relative;
-    min-width: 300px;
-}
-</style>
 
 <script src="{{ asset('js/game.js') }}" defer></script>
 </body>

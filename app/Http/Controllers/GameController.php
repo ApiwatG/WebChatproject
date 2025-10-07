@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Events\GameMove;
 use Illuminate\Http\Request;
 
+use App\Services\TicTacToeBot;
+
 class GameController extends Controller
 {
     protected $winningConditions = [
@@ -12,6 +14,8 @@ class GameController extends Controller
         [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
         [0, 4, 8], [2, 4, 6]             // Diagonals
     ];
+
+    protected $bot;
 
     public function request(Request $request, $roomId)
     {
@@ -36,6 +40,34 @@ class GameController extends Controller
     {
         $position = $request->position;
         $player = $request->player;
+        $isBot = $request->isBot ?? false;
+        
+        // ถ้าเป็นการเล่นกับบอท
+        if ($isBot) {
+            $board = $request->board;
+            $gameState = $this->checkGameState(['position' => $position, 'player' => $player, 'board' => $board]);
+            
+            // ถ้าเกมยังไม่จบ ให้บอทเล่น
+            if (!$gameState['winner']) {
+                $board[$position] = $player;
+                $botMove = $this->bot->makeMove($board);
+                if ($botMove !== null) {
+                    $board[$botMove] = 'O';
+                    $gameState = $this->checkGameState(['position' => $botMove, 'player' => 'O', 'board' => $board]);
+                    
+                    return response()->json([
+                        'status' => 'success',
+                        'botMove' => $botMove,
+                        'gameState' => $gameState
+                    ]);
+                }
+            }
+            
+            return response()->json([
+                'status' => 'success',
+                'gameState' => $gameState
+            ]);
+        }
         
         // Create game state
         $gameState = $this->checkGameState($request->all());

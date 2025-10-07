@@ -46,4 +46,5 @@ Route::middleware([
     Route::post('/game/{roomId}/decline', [GameController::class, 'decline']);
     Route::post('/game/{roomId}/move', [GameController::class, 'move']);
     Route::post('/game/{roomId}/reset', [GameController::class, 'reset']);
+    Route::post('/game/{roomId}/bot/start', [GameController::class, 'startBotGame']);
 });
