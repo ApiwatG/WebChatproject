@@ -33,10 +33,24 @@ class MessageSent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
+<<<<<<< Updated upstream
             'user' => $this->user,
             'message' => $this->message,
             'time' => $this->time,
         ];
     }
+=======
+            'roomId' => $this->roomId,
+            'user' => $this->user,
+            'message' => $this->message,
+            'time' => now()->toIso8601String()
+        ];
+    }
+
+    public function broadcastAs()
+    {
+        return 'MessageSent';
+    }
+>>>>>>> Stashed changes
 }
 

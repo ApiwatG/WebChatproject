@@ -41,5 +41,15 @@
         @stack('modals')
 
         @livewireScripts
+<<<<<<< Updated upstream
+=======
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script>
+            window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+                'user' => Auth::user()
+            ]) !!};
+        </script>
+>>>>>>> Stashed changes
     </body>
 </html>

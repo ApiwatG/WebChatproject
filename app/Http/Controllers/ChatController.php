@@ -11,10 +11,19 @@ class ChatController extends Controller
 {
     public function sendMessage(Request $request, $roomId)
     {
+<<<<<<< Updated upstream
         $message = $request->input('message');
         if (empty($message)) {
             return response()->json(['status' => 'error', 'error' => 'Message cannot be empty'], 422);
         }
+=======
+        $request->validate([
+            'message' => 'required|string'
+        ]);
+
+        $message = $request->input('message');
+        $user = auth()->user();
+>>>>>>> Stashed changes
 
         $user = auth()->user();
         if (!$user) {
@@ -36,14 +45,23 @@ class ChatController extends Controller
 =======
         $cacheKey = "room:{$roomId}:messages";
         $messages = Cache::get($cacheKey, []);
+<<<<<<< Updated upstream
         $time = now()->toIso8601String();
         $messages[] = ['user' => $user->name, 'message' => $message, 'time' => $time];
+=======
+        $messages[] = [
+            'user' => $user->name,
+            'message' => $message,
+            'time' => now()->toIso8601String()
+        ];
+>>>>>>> Stashed changes
         Cache::put($cacheKey, $messages, 3600);
 
 <<<<<<< Updated upstream
         broadcast(new MessageSent($roomId, $user->name, $message, $time))->toOthers();
 >>>>>>> Stashed changes
 
+<<<<<<< Updated upstream
             return response()->json([
                 'status' => 'success',
                 'message' => 'Message sent successfully'
@@ -65,6 +83,13 @@ class ChatController extends Controller
         ]);
 
         return response()->json(['status' => 'Message Sent!', 'event' => $event]);
+>>>>>>> Stashed changes
+=======
+        return response()->json([
+            'status' => 'success',
+            'message' => $message,
+            'user' => $user->name
+        ]);
 >>>>>>> Stashed changes
     }
 

@@ -10,6 +10,9 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -79,11 +82,33 @@ window.Echo = new Echo({
 =======
     key: import.meta.env.VITE_PUSHER_APP_KEY,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+<<<<<<< Updated upstream
     encrypted: true,
     authEndpoint: "/broadcasting/auth",
+=======
+    wsHost: window.location.hostname,
+    wsPort: 6001,
+    forceTLS: false,
+    enabledTransports: ["ws", "wss"],
+    disableStats: true,
+>>>>>>> Stashed changes
     auth: {
         headers: {
             "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+    },
+<<<<<<< Updated upstream
+});
+>>>>>>> Stashed changes
+=======
+    activityTimeout: 30000,
+    auth: {
+        headers: {
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content")
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
         },
