@@ -11,10 +11,6 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
@@ -23,8 +19,7 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
  * allows your team to easily build robust real-time web applications.
  */
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 // import Echo from 'laravel-echo';
 
 // import Pusher from 'pusher-js';
@@ -40,19 +35,16 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
-=======
+<
+
 
 // other bootstrapping you have...
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
 
->>>>>>> Stashed changes
+
 window.Pusher = Pusher;
 
 window.Echo = new Echo({
@@ -63,11 +55,7 @@ window.Echo = new Echo({
     forceTLS: true,
     encrypted: true,
 });
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
+
 import Pusher from "pusher-js";
 import Echo from "laravel-echo";
 window.Pusher = Pusher;
@@ -78,11 +66,8 @@ window.Echo = new Echo({
     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
 });
 
->>>>>>> Stashed changes
-=======
     key: import.meta.env.VITE_PUSHER_APP_KEY,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-<<<<<<< Updated upstream
     encrypted: true,
     authEndpoint: "/broadcasting/auth",
 =======
