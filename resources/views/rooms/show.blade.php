@@ -1,11 +1,17 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="en">
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+>>>>>>> Stashed changes
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+<<<<<<< Updated upstream
     <title>{{ $room->name }} - Chat Room</title>
     <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.4/axios.min.js"></script>
@@ -72,6 +78,13 @@
     <button class="restart-game" onclick="restartGame()">Restart Game</button>
 </div>
 
+=======
+    <title>Chat Room</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
+</head>
+<body>
+>>>>>>> Stashed changes
 <div class="wrap">
     {{-- Left Scene Area --}}
     <div class="scene">
@@ -126,6 +139,11 @@
         
         messagesDiv.appendChild(msgDiv);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        if (!isSent && soundEnabled) {
+            const audio = new Audio('/sounds/message.mp3');
+            audio.play();
+        }
     }
 >>>>>>> Stashed changes
 
@@ -160,10 +178,27 @@
         userListDiv.innerHTML += users.map(user => user.name).join(', ');
     }
 
+    window.addEventListener('load', () => {
+        // Subscribe to the private channel
+        window.Echo.private(`chat.${roomId}`)
+            .listen('.MessageSent', (e) => {
+                console.log('Message received:', e);
+                if (e.user !== currentUser) {
+                    addMessage(e.user, e.message, false);
+                }
+            })
+            .subscribed(() => {
+                console.log('Subscribed to private channel');
+            })
+            .error((error) => {
+                console.error('Channel error:', error);
+            });
+    });
+
     // Load cached messages
-    fetch(`/chat/${roomId}/messages`)
-        .then(res => res.json())
-        .then(data => {
+    axios.get(`/chat/${roomId}/messages`)
+        .then(response => {
+            const data = response.data;
             data.forEach(msg => {
                 const isSent = msg.user === currentUser;
                 addMessage(msg.user, msg.message, isSent);
@@ -195,6 +230,7 @@
             console.error('Echo not loaded!');
         }
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
         // Send Message Function
         async function sendMessage(e) {
@@ -434,6 +470,32 @@
                     document.getElementById("chat-form").dispatchEvent(new Event('submit'));
                 }
 =======
+=======
+    // Handle form submission
+    document.getElementById('chat-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const messageInput = document.getElementById('message');
+        const message = messageInput.value.trim();
+        
+        if (message) {
+            // Send the message using axios
+            axios.post(`/chat/${roomId}/messages`, {
+                message: message,
+                _token: document.querySelector('meta[name="csrf-token"]').content
+            })
+            .then(() => {
+                // Add the message to the chat immediately
+                addMessage(currentUser, message, true);
+                messageInput.value = '';
+            })
+            .catch(err => {
+                console.error('Failed to send message:', err);
+                alert('Failed to send message. Please try again.');
+            });
+        }
+    });
+
+>>>>>>> Stashed changes
     // Listen for new messages
     let channel;
     if (window.Echo) {

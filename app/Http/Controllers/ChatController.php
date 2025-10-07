@@ -5,7 +5,23 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+<<<<<<< Updated upstream
 use Illuminate\Support\Facades\Auth;
+=======
+require __DIR__ . '/vendor/autoload.php';
+use Pusher\Pusher;
+
+
+
+$newmessage ;
+
+$result = $pusher->trigger('messages_sent', 'new-message', ['message' => $newmessage]);
+if ($result) {
+    echo "ส่งข้อมูลสำเร็จ!";
+} else {
+    echo "เกิดข้อผิดพลาดในการส่งข้อมูล";
+}
+>>>>>>> Stashed changes
 
 class ChatController extends Controller
 {

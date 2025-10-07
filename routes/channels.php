@@ -22,6 +22,14 @@ use App\Models\User;
 use App\Models\Room;
 
 Broadcast::channel('chat.{roomId}', function (User $user, $roomId) {
+<<<<<<< Updated upstream
     return true; // ตรวจสอบสิทธิ์ตามที่ต้องการ
+});
+>>>>>>> Stashed changes
+=======
+    return [
+        'id' => $user->id,
+        'name' => $user->name
+    ];
 });
 >>>>>>> Stashed changes

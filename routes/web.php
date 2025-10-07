@@ -17,6 +17,9 @@ Route::get('/','App\Http\Controllers\PusherController@index');
 Route::post('/broadcast','App\Http\Controllers\PusherController@broadcast');
 Route::post('/receive','App\Http\Controllers\PusherController@receive');
 
+// Broadcast routes
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

@@ -27,12 +27,13 @@ class MessageSent implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new PresenceChannel('chat.' . $this->roomId);
+        return new PrivateChannel('chat.' . $this->roomId);
     }
 
     public function broadcastWith()
     {
         return [
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             'user' => $this->user,
             'message' => $this->message,
@@ -50,6 +51,20 @@ class MessageSent implements ShouldBroadcast
     public function broadcastAs()
     {
         return 'MessageSent';
+    }
+>>>>>>> Stashed changes
+=======
+            'user' => $this->user,
+            'message' => $this->message
+        ];
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'user' => $this->user,
+            'content' => $this->message,
+        ];
     }
 >>>>>>> Stashed changes
 }
