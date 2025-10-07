@@ -49,14 +49,37 @@
 =======
 <head>@vite(['resources/js/app.js'])</head>
 <link rel="stylesheet" href="{{ asset('css/inroom.css') }}">
+<link rel="stylesheet" href="{{ asset('css/tictactoe.css') }}">
+
+<div id="gameOverlay" class="overlay"></div>
+<div id="gamePopup" class="game-popup">
+    <div class="game-header">
+        <h3>Tic Tac Toe</h3>
+        <button class="close-game" onclick="closeGame()">&times;</button>
+    </div>
+    <div class="game-status" id="gameStatus">X's turn</div>
+    <div class="board" id="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+    <button class="restart-game" onclick="restartGame()">Restart Game</button>
+</div>
+
 <div class="wrap">
     {{-- Left Scene Area --}}
     <div class="scene">
-        {{-- Your game/content area here --}}
         <div class="minilogo">
             <img src="{{ asset('img/logo.png') }}" alt="Game Logo" onerror="this.style.display='none'">
 >>>>>>> Stashed changes
         </div>
+        <button onclick="openGame()" class="play-button">Play Tic Tac Toe</button>
     </div>
 
     {{-- Sound Toggle Button --}}

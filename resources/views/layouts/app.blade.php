@@ -13,9 +13,11 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="{{ mix('js/app.js') }}" defer></script>
 
         <!-- Styles -->
         @livewireStyles
+        @stack('styles')
     </head>
     <body class="font-sans antialiased">
         <x-banner />
