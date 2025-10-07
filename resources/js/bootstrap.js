@@ -8,9 +8,6 @@ import axios from "axios";
 window.axios = axios;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
@@ -35,8 +32,6 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
-import Echo from "laravel-echo";
-import Pusher from "pusher-js";
 <
 
 
@@ -66,8 +61,10 @@ window.Echo = new Echo({
     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
 });
 
+
     key: import.meta.env.VITE_PUSHER_APP_KEY,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    
     encrypted: true,
     authEndpoint: "/broadcasting/auth",
 =======
@@ -76,6 +73,8 @@ window.Echo = new Echo({
     forceTLS: false,
     enabledTransports: ["ws", "wss"],
     disableStats: true,
+>>>>>>> Stashed changes
+=======
     wsHost: window.location.hostname,
     wsPort: 6001,
     wssPort: 6001,
@@ -92,6 +91,7 @@ window.Echo = new Echo({
         },
     },
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 });
 >>>>>>> Stashed changes
 =======
@@ -105,5 +105,8 @@ window.Echo = new Echo({
                 .getAttribute("content"),
         },
     },
+});
+>>>>>>> Stashed changes
+=======
 });
 >>>>>>> Stashed changes
