@@ -1,0 +1,164 @@
+/* การกำหนดฟอนต์และพื้นฐาน */
+body {
+    font-family: 'Kanit', 'Tahoma', sans-serif;
+    font-size: 16px; 
+    line-height: 1.6;
+    background-color: #f4f4f4; 
+}
+
+/* --- Sidebar และ Navigation (จาก CSS เดิม) --- */
+.sidebar {
+    min-height: 100vh;
+    background-color: #f8f8f8; 
+    padding-top: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05); 
+}
+
+.nav-item {
+    width: 100%;
+}
+
+/* ลิงก์เมนูอื่นๆ ใน Sidebar (Ban User, Chat log) */
+.nav-link-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 15px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #333; 
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link-item:hover {
+    background-color: #e9ecef; 
+    color: #800080; /* Purple on Hover */
+}
+
+/* ปุ่ม Dashboard (สีดำ/ม่วง) - Active State */
+.dashboard-btn, .dashboard-btn:focus {
+    background-color: #000000; /* Black */
+    color: white; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.4s ease; 
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 15px;
+    margin-bottom: 5px;
+    text-decoration: none; 
+}
+
+.dashboard-btn:hover {
+    background-color: #800080; /* Purple on Hover */
+}
+
+
+/* --- Dashboard Title (ปรับปรุง) --- */
+.main-content {
+    padding: 20px;
+}
+
+.dashboard-title {
+    font-weight: 700;
+    color: #333;
+    border-bottom: 2px solid #800080; /* Purple underline */
+    padding-bottom: 10px;
+}
+
+
+/* --- Stat Cards (Improved for aesthetics and dimension) --- */
+.stat-card {
+    padding: 25px 20px; 
+    border-radius: 12px; 
+    color: white;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    /* Flexbox layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 160px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px); /* Lift on Hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h4 {
+    font-weight: 500; 
+    font-size: 1.2rem;
+    margin-bottom: 10px; 
+    opacity: 0.9;
+}
+
+.stat-card .display-4 {
+    font-size: 3.5rem; 
+    font-weight: 800;
+}
+
+/* Stat Card Colors */
+.card-weekly { background-color: #ffb85f; } /* Orange */
+.card-all { background-color: #72bbf8; }   /* Blue */
+/* .card-online color has been removed */
+
+
+/* --- Panels (Top Players List) --- */
+.view-panel {
+    background-color: white;
+    border: 1px solid #e0e0e0; 
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08); 
+    padding: 25px; 
+    margin-bottom: 20px;
+    height: 100%; 
+}
+
+.panel-title {
+    font-weight: 700;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px !important;
+}
+
+/* Top Player List */
+.top-player-list {
+    max-height: 400px; /* Increased height since it's the main panel now */
+    overflow-y: auto;
+    padding-right: 10px; 
+    list-style-position: inside; 
+}
+
+.list-player-item {
+    transition: background-color 0.3s ease;
+    border-left: 5px solid transparent; 
+    margin-bottom: 5px;
+}
+
+.list-player-item:hover {
+    background-color: #f8f9fa;
+    border-left-color: #800080; /* Highlight with Purple on Hover */
+}
+
+.player-name {
+    font-weight: 600 !important;
+    color: #000;
+}
+
+.play-time-badge {
+    background-color: #800080 !important; /* Changed Badge to Purple */
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}

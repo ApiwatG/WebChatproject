@@ -8,7 +8,7 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}"> 
     
     </head>
 <body>
@@ -40,9 +40,6 @@
                         <a href="{{ route('banuser') }}" class="text-decoration-none">
                         <button class="nav-link-item">Ban User</button></a>
                         </li>
-                    <li class="nav-item">
-                        <button class="nav-link-item">Chat log</button>
-                    </li>
                     <li class="nav-item">
                         <button class="nav-link-item">Add Cosmetics</button>
                     </li>
