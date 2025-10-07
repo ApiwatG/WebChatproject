@@ -588,3 +588,120 @@ body {
             }
 }
 
+.game-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-overlay.active {
+    display: flex;
+}
+
+/* Game Popup */
+.game-popup {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-width: 400px;
+}
+
+.game-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+}
+
+.game-close:hover {
+    color: #000;
+}
+
+/* Tic-Tac-Toe Board */
+.ttt-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+.ttt-cell {
+    width: 100px;
+    height: 100px;
+    background: #f0f0f0;
+    border: 2px solid #333;
+    font-size: 48px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.ttt-cell:hover {
+    background: #e0e0e0;
+}
+
+.ttt-cell.disabled {
+    cursor: not-allowed;
+}
+
+.game-status {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.game-reset {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 30px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.game-reset:hover {
+    background: #45a049;
+}
+
+/* Game Button */
+.game-button {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    background: #FF6B6B;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+    transition: all 0.3s;
+}
+
+.game-button:hover {
+    transform: scale(1.1);
+    background: #FF5252;
+}
