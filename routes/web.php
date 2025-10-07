@@ -7,7 +7,7 @@ use App\Http\Controllers\CosmeticController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\XOGameController;
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ChatLogController;
@@ -45,6 +45,11 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
     
+
+Route::get('/xo', [XOGameController::class, 'index'])->name('xo.index');
+Route::post('/xo/move/{index}', [XOGameController::class, 'move'])->name('xo.move');
+Route::post('/xo/reset', [XOGameController::class, 'reset'])->name('xo.reset');
+
     // Shop Routes
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
     Route::post('/shop/{cosmetic}/purchase', [ShopController::class, 'purchase'])->name('shop.purchase');
@@ -70,6 +75,8 @@ Route::middleware([
     
     // Report Routes
     Route::post('/report/{offender}', [ReportController::class, 'store'])->name('report.store');
+
+    
 });
 
 // Admin Routes
@@ -97,10 +104,5 @@ Route::middleware([
     Route::get('/chatlog/{id}', [ChatLogController::class, 'show'])->name('chatlog.show');
     
     // Cosmetics
-    Route::get('/admincosmetics', [adminCosmeticController::class, 'index'])->name('adcosmetics.index');
-    Route::post('/admincosmetics', [adminCosmeticController::class, 'store'])->name('adcosmetics.store');
-    Route::get('/admincosmetics/{id}/edit', [adminCosmeticController::class, 'edit'])->name('adcosmetics.edit');
-    Route::put('/admincosmetics/{id}', [adminCosmeticController::class, 'update'])->name('adcosmetics.update');
-    Route::delete('/admincosmetics/{id}', [adminCosmeticController::class, 'destroy'])->name('adcosmetics.destroy');
-    Route::post('/admincosmetics/types', [adminCosmeticController::class, 'storeType'])->name('adcosmetics.types.store');
+   
 });

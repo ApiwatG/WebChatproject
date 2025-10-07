@@ -152,5 +152,13 @@ class User extends Authenticatable
         ]);
 
         return ['success' => true, 'message' => 'Cosmetic purchased successfully'];
+
+
+
+    }
+
+    public function game()
+    {
+        return $this->belongsToMany(Game::class);
     }
 }
