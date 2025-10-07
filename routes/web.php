@@ -50,6 +50,17 @@ Route::get('/xo', [XOGameController::class, 'index'])->name('xo.index');
 Route::post('/xo/move/{index}', [XOGameController::class, 'move'])->name('xo.move');
 Route::post('/xo/reset', [XOGameController::class, 'reset'])->name('xo.reset');
 
+    // XO 
+    Route::get('/xo', [XOGameController::class, 'index'])->name('xo.index');
+    Route::post('/xo/move/{index}', [XOGameController::class, 'move'])->name('xo.move');
+    Route::post('/xo/reset', [XOGameController::class, 'reset'])->name('xo.reset');
+    
+    // Room-Xo
+    Route::get('/xo/room/{roomId}', [XOGameController::class, 'index'])->name('xo.room');
+    Route::get('/xo/room/{roomId}/state', [XOGameController::class, 'getState']);
+    Route::post('/xo/room/{roomId}/move/{index}', [XOGameController::class, 'move']);
+    Route::post('/xo/room/{roomId}/reset', [XOGameController::class, 'reset']);
+
     // Shop Routes
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
     Route::post('/shop/{cosmetic}/purchase', [ShopController::class, 'purchase'])->name('shop.purchase');

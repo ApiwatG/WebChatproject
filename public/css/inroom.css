@@ -587,4 +587,22 @@ body {
                 top: 10%;
             }
 }
-
+ .xo-logo-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.3s;
+            z-index: 100;
+            text-decoration: none;
+        }
+        .xo-logo-btn:hover {
+            opacity: 1;
+            transform: scale(1.1) rotate(5deg);
+        }
+        .xo-logo-btn img {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }

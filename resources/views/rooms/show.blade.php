@@ -31,9 +31,9 @@
 <div class="container-wrapper">
     <div class="wrap">
         <div class="scene">
-            <div class="minilogo">
-                <img src="{{ asset('css/img/logo.png') }}" alt="Logo">
-            </div>
+            <a href="{{ route('xo.room', $room->id) }}" class="xo-logo-btn" title="Play Tic Tac Toe">
+    <img src="{{ asset('css/img/logo.png') }}" alt="XO Game">
+</a>
         </div>
 
         <div class="chatPanel">
