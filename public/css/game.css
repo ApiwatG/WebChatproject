@@ -1,28 +1,99 @@
-/* Game Popup Styles */
+/* Critical: Hide overlays by default */
 .game-overlay {
-    display: none;
+    display: none !important;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
     justify-content: center;
     align-items: center;
 }
 
+/* Only show when active */
 .game-overlay.active {
     display: flex !important;
 }
 
+/* Report modal */
+.report-modal {
+    display: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.report-modal[style*="display: flex"] {
+    display: flex !important;
+}
+
+/* Report mode banner */
+.report-mode-banner {
+    display: none;
+    background-color: #fef3c7;
+    border: 2px solid #f59e0b;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.report-mode-banner.active {
+    display: block;
+}
+
+/* Game button - always visible */
+.game-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+    z-index: 100;
+}
+
+.game-button:hover {
+    transform: scale(1.1);
+}
+
+/* Game popup */
 .game-popup {
     background: white;
-    border-radius: 15px;
     padding: 30px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
     position: relative;
-    max-width: 400px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .game-close {
@@ -30,48 +101,41 @@
     top: 10px;
     right: 15px;
     font-size: 28px;
-    cursor: pointer;
-    color: #666;
     font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    line-height: 1;
 }
 
 .game-close:hover {
     color: #000;
 }
 
+/* Tic-Tac-Toe Board */
 .ttt-board {
     display: grid;
     grid-template-columns: repeat(3, 100px);
-    grid-gap: 5px;
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
     margin: 20px auto;
-    width: fit-content;
+    justify-content: center;
 }
 
 .ttt-cell {
-    width: 100px;
-    height: 100px;
-    background: #f0f0f0;
+    background-color: #f0f0f0;
     border: 2px solid #333;
-    font-size: 48px;
+    font-size: 36px;
     font-weight: bold;
-    cursor: pointer;
     display: flex;
-    align-items: center;
     justify-content: center;
-    transition: all 0.2s;
-    color: #333;
-}
-
-.ttt-cell[data-player="X"] {
-    color: #e74c3c;
-}
-
-.ttt-cell[data-player="O"] {
-    color: #3498db;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    /* user-select: none; */
 }
 
 .ttt-cell:hover:not(.disabled) {
-    background: #e0e0e0;
+    background-color: #e0e0e0;
 }
 
 .ttt-cell.disabled {
@@ -80,9 +144,9 @@
 
 .game-status {
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin: 10px 0;
     color: #333;
 }
 
@@ -90,7 +154,7 @@
     display: block;
     margin: 20px auto 0;
     padding: 10px 30px;
-    background: #4caf50;
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -99,28 +163,25 @@
 }
 
 .game-reset:hover {
-    background: #45a049;
+    background-color: #45a049;
 }
 
-.game-button {
-    position: fixed;
-    bottom: 80px;
-    left: 20px;
-    width: 60px;
-    height: 60px;
-    background: #ff6b6b;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
+/* Message styles for report mode */
+.msg.selectable {
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    z-index: 999;
-    transition: all 0.3s;
+    border-left: 3px solid #fbbf24;
 }
 
-.game-button:hover {
-    transform: scale(1.1);
-    background: #ff5252;
+.msg.selectable:hover {
+    background-color: #fef3c7;
+}
+
+.msg.selected-for-report {
+    background-color: #fef3c7;
+    border-left: 3px solid #f59e0b;
+}
+
+.report-btn.active {
+    background-color: #f59e0b;
+    color: white;
 }

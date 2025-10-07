@@ -20,26 +20,19 @@ if (token) {
     console.error("CSRF token not found");
 }
 
-
-window.Pusher = Pusher;
-
 window.Echo = new Echo({
     broadcaster: "pusher",
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: true,
-    wsHost: "127.0.0.1",
+    key: import.meta.env.VITE_PUSHER_APP_KEY || "local",
+    wsHost: window.location.hostname,
     wsPort: 6001,
     cluster: "mt1",
     forceTLS: false,
     disableStats: true,
     enabledTransports: ["ws", "wss"],
+    encrypted: false,
     auth: {
         headers: {
-            "X-CSRF-TOKEN":
-                document
-                    .querySelector('meta[name="csrf-token"]')
-                    ?.getAttribute("content") || "",
+            "X-CSRF-TOKEN": token ? token.content : "",
         },
     },
 });

@@ -1,0 +1,92 @@
+/* Z-index hierarchy fixes */
+.wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.avatars-container {
+    position: relative;
+    z-index: 2;
+}
+
+.chatPanel {
+    position: relative;
+    z-index: 3;
+}
+
+.game-button {
+    position: fixed;
+    z-index: 900;
+}
+
+.game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.game-overlay.active {
+    display: flex;
+}
+
+.game-popup {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    z-index: 1001;
+}
+
+.report-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.report-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    z-index: 1101;
+}
+
+.btn-exit {
+    position: relative;
+    z-index: 4;
+}
+
+.scene {
+    position: relative;
+    z-index: 1;
+}
+
+.table {
+    position: relative;
+    z-index: 2;
+}
+
+.minilogo {
+    position: absolute;
+    z-index: 3;
+}
+
+/* Ensure clickable elements are actually clickable */
+button, input, .ttt-cell, .avatar-wrapper, .game-button {
+    position: relative;
+    z-index: 5;
+}

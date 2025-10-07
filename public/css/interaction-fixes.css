@@ -1,0 +1,62 @@
+.container-wrapper {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+}
+
+.wrap {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+}
+
+.chatPanel {
+    position: relative;
+    z-index: 3;
+    pointer-events: auto;
+}
+
+.participants-section {
+    position: relative;
+    z-index: 3;
+    pointer-events: auto;
+}
+
+.game-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.game-overlay {
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+.table {
+    position: fixed;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.avatars-container {
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+}
+
+.ttt-cell {
+    position: relative;
+    z-index: 1;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.game-popup {
+    position: relative;
+    z-index: 10000;
+    pointer-events: auto;
+}
