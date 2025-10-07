@@ -8,6 +8,7 @@
   <title>My Cosmetics - The Twilight Bar</title>
 </head>
 <body>
+  <x-toast />
   <div class="cosmetic-container"> 
     <div class="cosmetic-panel">
       <div>

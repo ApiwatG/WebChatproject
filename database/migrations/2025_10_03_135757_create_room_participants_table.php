@@ -18,6 +18,8 @@ return new class extends Migration
                 $table->foreignId('user_id')->constrained()->onDelete('cascade');
                 $table->boolean('is_inroom')->default(false);
                 $table->timestamps();
+                $table->softDeletes();
+
         });
     }
 

@@ -10,14 +10,15 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('rarity', function (Blueprint $table) {
+    {Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->string('rarity_name');
+            $table->foreignId('reporter_id')->constrained('room_participants')->onDelete('cascade');
+            $table->foreignId('offender_id')->constrained('room_participants')->onDelete('cascade');
+            $table->text('message');
             $table->timestamps();
             $table->softDeletes();
-
         });
+
     }
 
     /**
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rarity');
+        Schema::dropIfExists('reports');
     }
 };

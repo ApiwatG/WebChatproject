@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\RoomParticipant;
 
+
 class RoomController extends Controller
 {
+  
     public function index()
     {
         $rooms = Room::withCount([

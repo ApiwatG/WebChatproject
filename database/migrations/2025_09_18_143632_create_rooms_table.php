@@ -16,6 +16,7 @@ return new class extends Migration
     $table->string('name');
     $table->integer('max_users')->default(4);
     $table->timestamps();
+    $table->softDeletes();
 });
     }
 

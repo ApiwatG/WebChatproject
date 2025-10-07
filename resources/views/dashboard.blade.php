@@ -7,6 +7,7 @@
     <title>Join the party</title>
 </head>
 <body>
+    
     <h1>The Twilight bar</h1>
     
     <div class="dashboard-container">

@@ -65,27 +65,31 @@
         </div>
 
         <div class="participants-section">
-            <h3 class="participants-title">Participants ({{ $room->users->count() }})</h3>
-            <ul class="participants-list">
-                @foreach($room->users as $user)
-                    <li class="participant-item" data-user-id="{{ $user->id }}">
-                        <div class="participant-info">
-                            <div class="participant-name">{{ $user->name }}</div>
-                            @if($user->id !== auth()->id())
-                                <button 
-                                    type="button"
-                                    id="report-btn-{{ $user->id }}"
-                                    onclick="startReportMode({{ $user->id }}, '{{ $user->name }}')" 
-                                    class="report-btn">
-                                    Report
-                                </button>
-                            @endif
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
+    <h3 class="participants-title">Participants ({{ $room->users->count() }})</h3>
+    <ul class="participants-list">
+        @foreach($room->users as $user)
+            <li class="participant-item" data-user-id="{{ $user->id }}">
+                <div class="participant-info">
+                    <div class="participant-name">{{ $user->name }}</div>
+                    @if($user->id !== auth()->id())
+                        @php
+                            // Get the room_participant ID for this user
+                            $participantId = \App\Models\RoomParticipant::where('room_id', $room->id)
+                                ->where('user_id', $user->id)
+                                ->value('id');
+                        @endphp
+                        <button 
+                            type="button"
+                            id="report-btn-{{ $user->id }}"
+                            onclick="startReportMode({{ $participantId }}, '{{ $user->name }}')" 
+                            class="report-btn">
+                            Report
+                        </button>
+                    @endif
+                </div>
+            </li>
+        @endforeach
+    </ul>
 </div>
 
 <div id="reportModal" class="report-modal">

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->boolean('is_equipped')->default(false);
             $table->timestamp('acquired_at')->useCurrent();
             $table->timestamps();
-            
+            $table->softDeletes();
+
             // User can only own one instance of each cosmetic
             $table->unique(['user_id', 'cosmetic_id']);
         });

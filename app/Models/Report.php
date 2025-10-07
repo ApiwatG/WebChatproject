@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Report extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
         'reporter_id',
@@ -20,15 +20,26 @@ class Report extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
-    public function reporter()
+    public function reporterParticipant()
     {
-        return $this->belongsTo(User::class, 'reporter_id');
+        return $this->belongsTo(RoomParticipant::class, 'reporter_id');
+    }
+    
+    public function offenderParticipant()
+    {
+        return $this->belongsTo(RoomParticipant::class, 'offender_id');
     }
 
-    public function offender()
+    public function getReporterAttribute()
     {
-        return $this->belongsTo(User::class, 'offender_id');
+        return $this->reporterParticipant->user ?? null;
+    }
+
+    public function getOffenderAttribute()
+    {
+        return $this->offenderParticipant->user ?? null;
     }
 }

@@ -45,13 +45,13 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    // Check if user is banned
+   
     public function isBanned()
     {
         return !$this->is_active;
     }
 
-    // Ban user
+    
     public function ban($reason = null)
     {
         $this->update([
@@ -61,7 +61,7 @@ class User extends Authenticatable
         ]);
     }
 
-    // Unban user
+   
     public function unban()
     {
         $this->update([
@@ -93,16 +93,7 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    public function reports()
-    {
-        return $this->hasMany(Report::class, 'reported_user_id');
-    }
-
-    public function reportsMade()
-    {
-        return $this->hasMany(Report::class, 'reporter_id');
-    }
-
+  
     public function getEquippedCosmeticByType($typeId)
     {
         return $this->equippedCosmetics()
