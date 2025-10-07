@@ -29,10 +29,16 @@
                 <div class="cosmetic-details">
                     <h3>{{ $cosmetic->cosmetic_name }}</h3>
                     <div class="cosmetic-meta">
-                        <span class="badge badge-type">{{ $cosmetic->types->name }}</span>
-                        <span class="badge badge-price">{{ number_format($cosmetic->price) }} coins</span>
-                        <span class="badge" style="background: {{ $cosmetic->rarity->color ?? '#e2e8f0' }}; color: white;">
-                            {{ $cosmetic->rarity->name }}
+                        <span class="badge badge-type">
+                            {{ optional($cosmetic->cosmeticType)->cosmetictype_name ?? 'Uncategorized' }}
+                        </span>
+                        <span class="badge badge-price">{{ number_format($cosmetic->price ?? 0) }} coins</span>
+                        @php
+                            $rarityColor = optional($cosmetic->rarity)->color ?? '#e2e8f0';
+                            $rarityName  = optional($cosmetic->rarity)->rarity_name ?? 'Common';
+                        @endphp
+                        <span class="badge" style="background: {{ $rarityColor }}; color: white;">
+                            {{ $rarityName }}
                         </span>
                     </div>
                     @if($cosmetic->description)

@@ -40,9 +40,7 @@
                         <a href="{{ route('banuser') }}" class="text-decoration-none">
                         <button class="nav-link-item">Ban User</button></a>
                         </li>
-                    <li class="nav-item">
-                        <a href="{{ route('adcosmetics.index')}}"><button class="nav-link-item">Add Cosmetics</button></a>
-                    </li>
+                
                     
                 </ul>
             </div>
