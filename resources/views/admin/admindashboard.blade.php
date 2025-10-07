@@ -41,7 +41,7 @@
                         <button class="nav-link-item">Ban User</button></a>
                         </li>
                     <li class="nav-item">
-                        <button class="nav-link-item">Add Cosmetics</button>
+                        <a href="{{ route('adcosmetics.index')}}"><button class="nav-link-item">Add Cosmetics</button></a>
                     </li>
                     
                 </ul>

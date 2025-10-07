@@ -29,7 +29,7 @@
                 <div class="cosmetic-details">
                     <h3>{{ $cosmetic->cosmetic_name }}</h3>
                     <div class="cosmetic-meta">
-                        <span class="badge badge-type">{{ $cosmetic->type->name }}</span>
+                        <span class="badge badge-type">{{ $cosmetic->types->name }}</span>
                         <span class="badge badge-price">{{ number_format($cosmetic->price) }} coins</span>
                         <span class="badge" style="background: {{ $cosmetic->rarity->color ?? '#e2e8f0' }}; color: white;">
                             {{ $cosmetic->rarity->name }}

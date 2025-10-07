@@ -9,12 +9,12 @@ use App\Models\Rarity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class CosmeticController extends Controller
+class adminCosmeticController extends Controller
 {
     // แสดงหน้า index (รายการทั้งหมด)
     public function index()
     {
-        $cosmetics = Cosmetic::with(['type', 'rarity'])->latest()->get();
+        $cosmetics = Cosmetic::with(['cosmeticType', 'rarity'])->latest()->get();
         $types = CosmeticType::all();
         $rarities = Rarity::all();
 

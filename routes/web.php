@@ -7,7 +7,11 @@ use App\Http\Controllers\CosmeticController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\admin\CosmeticController;
+
+
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\ChatLogController;
+use App\Http\Controllers\Admin\AdminCosmeticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,10 +97,10 @@ Route::middleware([
     Route::get('/chatlog/{id}', [ChatLogController::class, 'show'])->name('chatlog.show');
     
     // Cosmetics
-    Route::get('/cosmetics', [adminCosmeticController::class, 'index'])->name('cosmetics.index');
-    Route::post('/cosmetics', [adminCosmeticController::class, 'store'])->name('cosmetics.store');
-    Route::get('/cosmetics/{id}/edit', [adminCosmeticController::class, 'edit'])->name('cosmetics.edit');
-    Route::put('/cosmetics/{id}', [adminCosmeticController::class, 'update'])->name('cosmetics.update');
-    Route::delete('/cosmetics/{id}', [adminCosmeticController::class, 'destroy'])->name('cosmetics.destroy');
-    Route::post('/cosmetics/types', [adminCosmeticController::class, 'storeType'])->name('cosmetics.types.store');
+    Route::get('/admincosmetics', [adminCosmeticController::class, 'index'])->name('adcosmetics.index');
+    Route::post('/admincosmetics', [adminCosmeticController::class, 'store'])->name('adcosmetics.store');
+    Route::get('/admincosmetics/{id}/edit', [adminCosmeticController::class, 'edit'])->name('adcosmetics.edit');
+    Route::put('/admincosmetics/{id}', [adminCosmeticController::class, 'update'])->name('adcosmetics.update');
+    Route::delete('/admincosmetics/{id}', [adminCosmeticController::class, 'destroy'])->name('adcosmetics.destroy');
+    Route::post('/admincosmetics/types', [adminCosmeticController::class, 'storeType'])->name('adcosmetics.types.store');
 });
