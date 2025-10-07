@@ -65,51 +65,48 @@
         </div>
 
         <div class="participants-section">
-    <h3 class="participants-title">Participants ({{ $room->users->count() }})</h3>
-    <ul class="participants-list">
-        @foreach($room->users as $user)
-            <li class="participant-item" data-user-id="{{ $user->id }}">
-                <div class="participant-info">
-                    <div class="participant-name">{{ $user->name }}</div>
-                    @if($user->id !== auth()->id())
-                        @php
-                            // Get the room_participant ID for this user
-                            $participantId = \App\Models\RoomParticipant::where('room_id', $room->id)
-                                ->where('user_id', $user->id)
-                                ->value('id');
-                        @endphp
-                        <button 
-                            type="button"
-                            id="report-btn-{{ $user->id }}"
-                            onclick="startReportMode({{ $participantId }}, '{{ $user->name }}')" 
-                            class="report-btn">
-                            Report
-                        </button>
-                    @endif
-                </div>
-            </li>
-        @endforeach
-    </ul>
+            <h3 class="participants-title">Participants ({{ $room->users->count() }})</h3>
+            <ul class="participants-list">
+                @foreach($room->users as $user)
+                    <li class="participant-item" data-user-id="{{ $user->id }}">
+                        <div class="participant-info">
+                            <div class="participant-name">{{ $user->name }}</div>
+                            @if($user->id !== auth()->id())
+                                <button 
+                                    type="button"
+                                    id="report-btn-{{ $user->id }}"
+                                    onclick="startReportMode({{ $user->id }}, '{{ $user->name }}')" 
+                                    class="report-btn">
+                                    Report
+                                </button>
+                            @endif
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
 </div>
 
 <div id="reportModal" class="report-modal">
     <div class="report-modal-content">
         <h2 class="report-modal-title">Report <span id="reportUserName"></span></h2>
-        <form id="reportForm" method="POST" action="">
-            @csrf
-            <input type="hidden" name="reported_message" id="reportedMessage">
-            
-            <div id="selectedMessagePreview" class="selected-message-display" style="display: none;">
-                <strong>Reported Message:</strong>
-                <div id="selectedMessageContent"></div>
-            </div>
-            
-            <textarea name="message" class="report-textarea" rows="3" placeholder="Describe the issue..." required></textarea>
-            <div class="report-modal-actions">
-                <button type="button" onclick="closeReportModal()" class="btn-cancel">Cancel</button>
-                <button type="submit" class="btn-submit">Submit Report</button>
-            </div>
-        </form>
+       <form id="reportForm" method="POST" action="">
+    @csrf
+    <input type="hidden" name="room_id" value="{{ $room->id }}">
+    <input type="hidden" name="reported_message" id="reportedMessage">
+    
+    <div id="selectedMessagePreview" class="selected-message-display" style="display: none;">
+        <strong>Reported Message:</strong>
+        <div id="selectedMessageContent"></div>
+    </div>
+    
+    <textarea name="message" class="report-textarea" rows="3" placeholder="Describe the issue..." required></textarea>
+    <div class="report-modal-actions">
+        <button type="button" onclick="closeReportModal()" class="btn-cancel">Cancel</button>
+        <button type="submit" class="btn-submit">Submit Report</button>
+    </div>
+</form>
     </div>
 </div>
 

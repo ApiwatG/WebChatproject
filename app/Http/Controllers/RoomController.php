@@ -78,12 +78,12 @@ class RoomController extends Controller
         $activeUsersCount = $room->users()->wherePivot('is_inroom', true)->count();
         
         if ($activeUsersCount === 0) {
-            $room->users()->detach(); 
-            $room->delete();
-        }
-
-        return redirect()->route('rooms.index');
+        RoomParticipant::where('room_id', $room->id)->delete();
+        $room->delete();
     }
+
+    return redirect()->route('rooms.index');
+}
 
     public function show($id)
     {
