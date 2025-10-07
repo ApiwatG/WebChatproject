@@ -7,6 +7,7 @@ use App\Http\Controllers\CosmeticController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\CosmeticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,4 +86,17 @@ Route::middleware([
     
     // Report Management
     Route::post('/report/dismiss/{id}', [AdminController::class, 'dismissReport'])->name('report.dismiss');
+
+    
+    // Chat Log
+    Route::get('/chatlog', [ChatLogController::class, 'index'])->name('chatlog.index');
+    Route::get('/chatlog/{id}', [ChatLogController::class, 'show'])->name('chatlog.show');
+    
+    // Cosmetics
+    Route::get('/cosmetics', [adminCosmeticController::class, 'index'])->name('cosmetics.index');
+    Route::post('/cosmetics', [adminCosmeticController::class, 'store'])->name('cosmetics.store');
+    Route::get('/cosmetics/{id}/edit', [adminCosmeticController::class, 'edit'])->name('cosmetics.edit');
+    Route::put('/cosmetics/{id}', [adminCosmeticController::class, 'update'])->name('cosmetics.update');
+    Route::delete('/cosmetics/{id}', [adminCosmeticController::class, 'destroy'])->name('cosmetics.destroy');
+    Route::post('/cosmetics/types', [adminCosmeticController::class, 'storeType'])->name('cosmetics.types.store');
 });
